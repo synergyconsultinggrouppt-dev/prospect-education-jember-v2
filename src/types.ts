@@ -414,3 +414,58 @@ export interface AttendanceRecord {
   verifiedBySystem: boolean;
 }
 
+export interface LetterheadConfig {
+  institutionName: string;
+  institutionSubName: string;
+  legalLicense: string;
+  address: string;
+  phone: string;
+  whatsapp: string;
+  email: string;
+  website: string;
+  logoUrl: string;
+  sealUrl?: string;
+  headerLineStyle: 'double' | 'single' | 'accent_bar';
+  primaryColor: string;
+  cityIssued: string;
+  defaultSignerName: string;
+  defaultSignerTitle: string;
+  defaultSignerNip: string;
+  signatureUrl?: string;
+  stempelUrl?: string;
+}
+
+export interface LetterTemplate {
+  id: string;
+  title: string;
+  code: string;
+  category: 'LoA' | 'Surat Keterangan' | 'Rekomendasi' | 'Permohonan Visa' | 'Perjanjian' | 'Pernyataan' | 'Lainnya';
+  subject: string;
+  numberFormat: string;
+  bodyContent: string;
+  signerName?: string;
+  signerTitle?: string;
+  signerNip?: string;
+  signatureUrl?: string;
+  stempelUrl?: string;
+  updatedAt: string;
+}
+
+export interface IssuedLetter {
+  id: string;
+  letterNumber: string;
+  templateId: string;
+  templateTitle: string;
+  candidateId?: string;
+  candidateName: string;
+  candidateRegNumber?: string;
+  subject: string;
+  issueDate: string;
+  contentHtml: string;
+  signerName: string;
+  signerTitle: string;
+  issuedBy: string;
+  status: 'published' | 'draft' | 'revoked';
+  downloadCount: number;
+}
+

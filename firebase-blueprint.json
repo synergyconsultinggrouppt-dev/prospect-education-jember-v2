@@ -1,0 +1,88 @@
+{
+  "entities": {
+    "User": {
+      "title": "User",
+      "description": "User account and role authorization metadata",
+      "type": "object",
+      "properties": {
+        "uid": { "type": "string" },
+        "email": { "type": "string" },
+        "role": { "type": "string" },
+        "fullName": { "type": "string" }
+      },
+      "required": ["uid", "email", "role"]
+    },
+    "Candidate": {
+      "title": "Candidate",
+      "description": "Student candidate registration record",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "registrationNumber": { "type": "string" },
+        "fullName": { "type": "string" },
+        "email": { "type": "string" },
+        "selectedProgram": { "type": "string" },
+        "status": { "type": "string" }
+      },
+      "required": ["id", "registrationNumber", "fullName", "email"]
+    },
+    "FinancialRecord": {
+      "title": "FinancialRecord",
+      "description": "Financial ledger income or expense record",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "title": { "type": "string" },
+        "amount": { "type": "number" },
+        "type": { "type": "string" }
+      },
+      "required": ["id", "title", "amount", "type"]
+    },
+    "AuditLog": {
+      "title": "AuditLog",
+      "description": "Audit trail log entry",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "user": { "type": "string" },
+        "role": { "type": "string" },
+        "action": { "type": "string" }
+      },
+      "required": ["id", "user", "action"]
+    },
+    "LMSModule": {
+      "title": "LMSModule",
+      "description": "LMS course module",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "title": { "type": "string" },
+        "language": { "type": "string" },
+        "isCompleted": { "type": "boolean" }
+      },
+      "required": ["id", "title", "language"]
+    }
+  },
+  "firestore": {
+    "/users/{userId}": {
+      "schema": "User",
+      "description": "User account profiles"
+    },
+    "/candidates/{candidateId}": {
+      "schema": "Candidate",
+      "description": "Candidate records"
+    },
+    "/financials/{financialId}": {
+      "schema": "FinancialRecord",
+      "description": "Financial ledger"
+    },
+    "/audit_logs/{logId}": {
+      "schema": "AuditLog",
+      "description": "System audit trail"
+    },
+    "/lms_modules/{moduleId}": {
+      "schema": "LMSModule",
+      "description": "LMS learning modules"
+    }
+  }
+}

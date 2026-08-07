@@ -1,0 +1,6 @@
+{
+  "name": "Prospect Education Cabang Jember",
+  "description": "Sistem Informasi Manajemen dan Website Resmi Prospect Education Cabang Jember - Pendaftaran Online, System Verifikasi, LMS, Dashboard Admin, Super Admin & Investor",
+  "requestFramePermissions": ["camera"],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

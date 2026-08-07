@@ -1,0 +1,111 @@
+// This is your Prisma schema file,
+// learning more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum Role {
+  STUDENT
+  CANDIDATE
+  ADMIN
+  SUPERADMIN
+  INVESTOR
+  WEBMASTER
+}
+
+enum CandidateStatus {
+  REGISTERED
+  BIODATA_SUBMITTED
+  DOCUMENTS_PENDING
+  DOCUMENTS_VERIFIED
+  PAYMENT_PENDING
+  PAYMENT_VERIFIED
+  LOA_ISSUED
+  DEPARTURE_READY
+  REJECTED
+}
+
+enum PaymentStatus {
+  PENDING
+  SETTLEMENT
+  VERIFIED
+  EXPIRED
+  FAILED
+  REFUNDED
+}
+
+model User {
+  id            String     @id @default(uuid())
+  email         String     @unique
+  password_hash String
+  role          Role       @default(CANDIDATE)
+  createdAt     DateTime   @default(now())
+  updatedAt     DateTime   @updatedAt
+
+  // 1:1 relation with Candidate
+  candidate     Candidate?
+
+  @@map("users")
+}
+
+model Candidate {
+  id          String          @id @default(uuid())
+  fullName    String
+  nik         String          @unique
+  userId      String          @unique
+  status      CandidateStatus @default(REGISTERED)
+  program     String?
+  phone       String?
+  address     String?
+  createdAt   DateTime        @default(now())
+  updatedAt   DateTime        @updatedAt
+
+  // 1:1 relation to User
+  user        User            @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  // 1:many relations
+  documents   Document[]
+  payments    Payment[]
+
+  @@map("candidates")
+}
+
+model Document {
+  id          String    @id @default(uuid())
+  candidateId String
+  type        String
+  url         String
+  verified    Boolean   @default(false)
+  verifiedAt  DateTime?
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+
+  // relation to Candidate
+  candidate   Candidate @relation(fields: [candidateId], references: [id], onDelete: Cascade)
+
+  @@map("documents")
+}
+
+model Payment {
+  id                String        @id @default(uuid())
+  candidateId       String
+  amount            Float
+  status            PaymentStatus @default(PENDING)
+  midtrans_order_id String        @unique
+  paymentType       String?
+  snapToken         String?
+  paidAt            DateTime?
+  createdAt         DateTime      @default(now())
+  updatedAt         DateTime      @updatedAt
+
+  // relation to Candidate
+  candidate         Candidate     @relation(fields: [candidateId], references: [id], onDelete: Cascade)
+
+  @@map("payments")
+}

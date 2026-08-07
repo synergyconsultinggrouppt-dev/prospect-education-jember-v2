@@ -193,33 +193,33 @@ export const LoginModal: React.FC<LoginModalProps> = ({ isOpen, onClose, initial
               })}
             </div>
 
-            {/* Role Credential Hint */}
+            {/* Role Access Information */}
             <div className="mt-2.5 p-2.5 bg-slate-100 dark:bg-slate-800/80 rounded-xl border border-slate-200 dark:border-slate-700 text-[11px] text-slate-600 dark:text-slate-300 flex items-start gap-2">
-              <AlertCircle className="w-4 h-4 text-amber-500 shrink-0 mt-0.5" />
+              <ShieldCheck className="w-4 h-4 text-emerald-500 shrink-0 mt-0.5" />
               <div>
                 {selectedRole === 'student' && (
                   <p>
-                    <strong>Siswa Baru wajib Mendaftar Online terlebih dahulu.</strong> Akun siswa terdaftar aktif menggunakan Username/Email pendaftaran dengan kata sandi default: <code className="bg-amber-100 dark:bg-amber-900/60 text-amber-900 dark:text-amber-200 px-1 py-0.5 rounded font-mono font-bold">siswa123</code>.
+                    <strong>Portal Siswa / Peserta:</strong> Masukkan Username / Email pendaftaran dan kata sandi akun terdaftar Anda.
                   </p>
                 )}
                 {selectedRole === 'admin' && (
                   <p>
-                    Akses Admin Cabang Jember. Gunakan username: <code className="bg-blue-100 dark:bg-blue-900/60 text-blue-900 dark:text-blue-200 px-1 py-0.5 rounded font-mono font-bold">admin</code> & password: <code className="bg-blue-100 dark:bg-blue-900/60 text-blue-900 dark:text-blue-200 px-1 py-0.5 rounded font-mono font-bold">admin123</code>.
+                    <strong>Akses Admin Cabang Jember:</strong> Masukkan Username / Email dan kata sandi pengelola resmi.
                   </p>
                 )}
                 {selectedRole === 'superadmin' && (
                   <p>
-                    Akses Direksi / Super Admin Pusat. Gunakan username: <code className="bg-amber-100 dark:bg-amber-900/60 text-amber-900 dark:text-amber-200 px-1 py-0.5 rounded font-mono font-bold">superadmin</code> & password: <code className="bg-amber-100 dark:bg-amber-900/60 text-amber-900 dark:text-amber-200 px-1 py-0.5 rounded font-mono font-bold">super123</code>.
+                    <strong>Akses Direksi / Super Admin:</strong> Masukkan Username / Email dan kata sandi otorisasi pusat.
                   </p>
                 )}
                 {selectedRole === 'investor' && (
                   <p>
-                    Akses Mitras / Investor. Gunakan username: <code className="bg-emerald-100 dark:bg-emerald-900/60 text-emerald-900 dark:text-emerald-200 px-1 py-0.5 rounded font-mono font-bold">investor</code> & password: <code className="bg-emerald-100 dark:bg-emerald-900/60 text-emerald-900 dark:text-emerald-200 px-1 py-0.5 rounded font-mono font-bold">investor123</code>.
+                    <strong>Akses Investor / Mitras:</strong> Masukkan Username / Email dan kata sandi akun mitra terdaftar.
                   </p>
                 )}
                 {selectedRole === 'webmaster' && (
                   <p>
-                    Akses Tim IT Webmaster. Gunakan username: <code className="bg-purple-100 dark:bg-purple-900/60 text-purple-900 dark:text-purple-200 px-1 py-0.5 rounded font-mono font-bold">webmaster</code> & password: <code className="bg-purple-100 dark:bg-purple-900/60 text-purple-900 dark:text-purple-200 px-1 py-0.5 rounded font-mono font-bold">webmaster123</code>.
+                    <strong>Akses Tim IT / Webmaster:</strong> Masukkan Username / Email dan kata sandi otorisasi IT.
                   </p>
                 )}
               </div>

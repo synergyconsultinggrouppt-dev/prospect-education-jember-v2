@@ -28,6 +28,8 @@ import {
   StudentSkill,
   DigitalSignatureInfo,
   WhatsAppGatewayConfig,
+  EmailGatewayConfig,
+  EmailNotificationLog,
   AttendanceRecord,
 } from '../types';
 import {
@@ -36,6 +38,10 @@ import {
   triggerLoaApprovedWhatsApp,
   triggerPaymentVerifiedWhatsApp,
 } from '../utils/whatsappNotification';
+import {
+  DEFAULT_EMAIL_CONFIG,
+  sendAccountApprovalEmailNotification,
+} from '../utils/emailNotification';
 import { SystemAlerts } from '../utils/SystemAlerts';
 import {
   INITIAL_PROGRAMS,
@@ -160,9 +166,15 @@ interface AppContextType {
 
   // Programs & LMS
   programs: ProgramInfo[];
+  addProgram: (program: ProgramInfo) => void;
+  updateProgram: (id: string, updates: Partial<ProgramInfo>) => void;
+  deleteProgram: (id: string) => void;
   lmsModules: LMSModule[];
   toggleLMSModuleComplete: (moduleId: string) => void;
   addLMSModule: (module: LMSModule) => void;
+  updateLMSModule: (id: string, updates: Partial<LMSModule>) => void;
+  deleteLMSModule: (id: string) => void;
+  updateWebsiteFeatures: (features: Partial<WebsiteFeatures>) => void;
 
   // Downloadable Resources
   studyResources: StudyResource[];
@@ -193,6 +205,11 @@ interface AppContextType {
   // WhatsApp Gateway Notification Settings
   whatsappConfig: WhatsAppGatewayConfig;
   updateWhatsAppConfig: (newConfig: WhatsAppGatewayConfig) => void;
+
+  // Email Notification Gateway Settings & Service
+  emailConfig: EmailGatewayConfig;
+  updateEmailConfig: (newConfig: EmailGatewayConfig) => void;
+  sendApprovalEmail: (candidateId: string) => Promise<{ success: boolean; message?: string }>;
 
   // Quick Reset
   resetDataToDefault: () => void;
@@ -346,7 +363,14 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
 
   const [currentCandidateId, setCurrentCandidateId] = useState<string>('CAND-001');
 
-  const [programs] = useState<ProgramInfo[]>(INITIAL_PROGRAMS);
+  const [programs, setPrograms] = useState<ProgramInfo[]>(() => {
+    try {
+      const saved = localStorage.getItem('prospect_programs');
+      return saved ? JSON.parse(saved) : INITIAL_PROGRAMS;
+    } catch {
+      return INITIAL_PROGRAMS;
+    }
+  });
 
   const [webmasters, setWebmasters] = useState<WebmasterUser[]>(() => {
     try {
@@ -387,6 +411,34 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
   const updateWhatsAppConfig = (newConfig: WhatsAppGatewayConfig) => {
     setWhatsappConfig(newConfig);
     localStorage.setItem('prospect_whatsapp_config', JSON.stringify(newConfig));
+  };
+
+  const [emailConfig, setEmailConfig] = useState<EmailGatewayConfig>(() => {
+    try {
+      const saved = localStorage.getItem('prospect_email_config');
+      return saved ? JSON.parse(saved) : DEFAULT_EMAIL_CONFIG;
+    } catch {
+      return DEFAULT_EMAIL_CONFIG;
+    }
+  });
+
+  const updateEmailConfig = (newConfig: EmailGatewayConfig) => {
+    setEmailConfig(newConfig);
+    localStorage.setItem('prospect_email_config', JSON.stringify(newConfig));
+  };
+
+  const sendApprovalEmail = async (candidateId: string): Promise<{ success: boolean; message?: string }> => {
+    const candidate = candidates.find((c) => c.id === candidateId);
+    if (!candidate) {
+      return { success: false, message: 'Data pendaftar tidak ditemukan.' };
+    }
+    const res = await sendAccountApprovalEmailNotification(candidate, {
+      isSuperAdmin: currentRole === 'superadmin',
+    });
+    return {
+      success: res.success,
+      message: res.message || res.errorMessage,
+    };
   };
 
   const [auditLogs, setAuditLogs] = useState<AuditLogEntry[]>(() => {
@@ -594,6 +646,10 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
       );
     });
   }, [auditLogs]);
+
+  useEffect(() => {
+    localStorage.setItem('prospect_programs', JSON.stringify(programs));
+  }, [programs]);
 
   useEffect(() => {
     localStorage.setItem('prospect_study_resources', JSON.stringify(studyResources));
@@ -1239,17 +1295,28 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
   };
 
   const updateCandidateStatus = (candidateId: string, status: CandidateStatus) => {
-    let targetName = '';
+    let targetCandidate: Candidate | undefined = undefined;
     setCandidates((prev) =>
       prev.map((c) => {
         if (c.id === candidateId) {
-          targetName = c.fullName;
-          return { ...c, status };
+          targetCandidate = { ...c, status };
+          return targetCandidate;
         }
         return c;
       })
     );
-    SystemAlerts.notifyStatusChanged(addNotification, candidateId, status, targetName);
+    SystemAlerts.notifyStatusChanged(addNotification, candidateId, status, targetCandidate?.fullName || '');
+
+    // Trigger email notification when candidate account is approved
+    if (
+      targetCandidate &&
+      emailConfig.notifyOnAccountApproval &&
+      (status === 'document_verified' || status === 'superadmin_approved' || status === 'loa_issued' || status === 'lms_active')
+    ) {
+      sendAccountApprovalEmailNotification(targetCandidate, {
+        isSuperAdmin: currentRole === 'superadmin',
+      }).catch((err) => console.warn('Email dispatch notice:', err));
+    }
   };
 
   const deleteCandidate = (candidateId: string) => {
@@ -1655,8 +1722,63 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     }
   };
 
+  const addProgram = (program: ProgramInfo) => {
+    setPrograms((prev) => [...prev, program]);
+    addAuditLog({
+      actorName: 'Admin / Webmaster',
+      actorRole: 'admin',
+      actionCategory: 'system_config',
+      actionDescription: `Menambahkan program pelatihan baru: '${program.title}' (${program.category})`,
+      targetEntity: `Program (${program.id})`,
+      ipAddress: '127.0.0.1',
+      status: 'success',
+    });
+  };
+
+  const updateProgram = (id: string, updates: Partial<ProgramInfo>) => {
+    setPrograms((prev) => prev.map((p) => (p.id === id ? { ...p, ...updates } : p)));
+    addAuditLog({
+      actorName: 'Admin / Webmaster',
+      actorRole: 'admin',
+      actionCategory: 'system_config',
+      actionDescription: `Memperbarui data program pelatihan: ID '${id}'`,
+      targetEntity: `Program (${id})`,
+      ipAddress: '127.0.0.1',
+      status: 'success',
+    });
+  };
+
+  const deleteProgram = (id: string) => {
+    setPrograms((prev) => prev.filter((p) => p.id !== id));
+    addAuditLog({
+      actorName: 'Admin / Webmaster',
+      actorRole: 'admin',
+      actionCategory: 'system_config',
+      actionDescription: `Menghapus program pelatihan: ID '${id}'`,
+      targetEntity: `Program (${id})`,
+      ipAddress: '127.0.0.1',
+      status: 'success',
+    });
+  };
+
   const addLMSModule = (module: LMSModule) => {
     setLmsModules((prev) => [module, ...prev]);
+  };
+
+  const updateLMSModule = (id: string, updates: Partial<LMSModule>) => {
+    setLmsModules((prev) => prev.map((m) => (m.id === id ? { ...m, ...updates } : m)));
+  };
+
+  const deleteLMSModule = (id: string) => {
+    setLmsModules((prev) => prev.filter((m) => m.id !== id));
+  };
+
+  const updateWebsiteFeatures = (features: Partial<WebsiteFeatures>) => {
+    setWebsiteFeatures((prev) => {
+      const updated = { ...prev, ...features };
+      localStorage.setItem('prospect_website_features', JSON.stringify(updated));
+      return updated;
+    });
   };
 
   const addStudyResource = (resourceData: Omit<StudyResource, 'id' | 'downloadCount' | 'uploadedAt'>) => {
@@ -1826,9 +1948,15 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
         signCandidateLoa,
         signAdminLoa,
         programs,
+        addProgram,
+        updateProgram,
+        deleteProgram,
         lmsModules,
         toggleLMSModuleComplete,
         addLMSModule,
+        updateLMSModule,
+        deleteLMSModule,
+        updateWebsiteFeatures,
         studyResources,
         addStudyResource,
         deleteStudyResource,
@@ -1851,6 +1979,9 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
         submitFeedback,
         whatsappConfig,
         updateWhatsAppConfig,
+        emailConfig,
+        updateEmailConfig,
+        sendApprovalEmail,
         resetDataToDefault,
         authToken,
         getAuthHeaders,

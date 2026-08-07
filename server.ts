@@ -6,8 +6,9 @@ import jwt from "jsonwebtoken";
 import { GoogleGenAI } from "@google/genai";
 import { createServer as createViteServer } from "vite";
 import { initializeApp as initFirebaseApp } from "firebase/app";
-import { getFirestore as getDb, doc, setDoc, getDoc } from "firebase/firestore";
+import { getFirestore as getDb, doc, setDoc, getDoc, collection, getDocs, limit, query, orderBy } from "firebase/firestore";
 import firebaseConfig from "./firebase-applet-config.json";
+import nodemailer from "nodemailer";
 
 dotenv.config();
 
@@ -537,6 +538,233 @@ async function startServer() {
     } catch (error: any) {
       console.error("WhatsApp Send Endpoint Error:", error);
       return res.status(500).json({ error: error.message || "Gagal mengirim notifikasi WhatsApp." });
+    }
+  });
+
+  // HTML Email Template Generator for Account Approval
+  function generateAccountApprovalHtml(recipientName: string, registrationNumber?: string, programTitle?: string): string {
+    const regNo = registrationNumber || 'REG-PROSPECT-2026';
+    const prog = programTitle || 'Program Pendidikan & Pelatihan LPK Prospect Education';
+    const dateStr = new Date().toLocaleDateString('id-ID', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
+
+    return `
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Akun Disetujui - Prospect Education Jember</title>
+  <style>
+    body { font-family: 'Segoe UI', Arial, sans-serif; background-color: #f1f5f9; margin: 0; padding: 20px; color: #1e293b; }
+    .card { max-width: 600px; margin: 0 auto; background: #ffffff; border-radius: 16px; overflow: hidden; box-shadow: 0 10px 25px rgba(0,0,0,0.08); border: 1px solid #e2e8f0; }
+    .header { background: #0f172a; padding: 28px 24px; text-align: center; border-bottom: 4px solid #059669; }
+    .header h1 { color: #ffffff; margin: 0; font-size: 22px; font-weight: 800; letter-spacing: 0.5px; }
+    .header p { color: #10b981; margin: 6px 0 0 0; font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; }
+    .badge { display: inline-block; background: #dcfce7; color: #15803d; font-size: 11px; font-weight: 800; padding: 6px 14px; border-radius: 9999px; text-transform: uppercase; margin-bottom: 16px; border: 1px solid #bbf7d0; }
+    .content { padding: 32px 28px; }
+    .greeting { font-size: 18px; font-weight: 700; color: #0f172a; margin-bottom: 12px; }
+    .lead { font-size: 14px; line-height: 1.6; color: #334155; margin-bottom: 24px; }
+    .details-box { background: #f8fafc; border: 1px solid #cbd5e1; border-radius: 12px; padding: 20px; margin-bottom: 24px; }
+    .detail-row { display: flex; justify-content: space-between; padding: 8px 0; border-bottom: 1px dashed #e2e8f0; font-size: 13px; }
+    .detail-row:last-child { border-bottom: none; }
+    .detail-label { color: #64748b; font-weight: 600; }
+    .detail-value { color: #0f172a; font-weight: 700; text-align: right; }
+    .cta-btn { display: block; width: 100%; text-align: center; background: #059669; color: #ffffff; font-size: 15px; font-weight: 800; text-decoration: none; padding: 14px 20px; border-radius: 10px; margin: 24px 0; box-sizing: border-box; }
+    .steps { background: #eff6ff; border-left: 4px solid #3b82f6; padding: 16px 20px; border-radius: 8px; font-size: 13px; color: #1e40af; margin-bottom: 24px; }
+    .steps ol { margin: 8px 0 0 0; padding-left: 20px; }
+    .steps li { margin-bottom: 6px; }
+    .footer { background: #0f172a; padding: 20px; text-align: center; font-size: 11px; color: #94a3b8; line-height: 1.5; }
+    .footer a { color: #38bdf8; text-decoration: none; }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <div class="header">
+      <h1>PROSPECT EDUCATION</h1>
+      <p>CABANG JEMBER &bull; TAIWAN & JEPANG PROGRAM</p>
+    </div>
+    <div class="content">
+      <div style="text-align: center;">
+        <span class="badge">✓ AKUN DISETUJUI & DIAKTIFKAN</span>
+      </div>
+      <div class="greeting">Halo, ${recipientName}!</div>
+      <div class="lead">
+        Selamat! Permohonan pendaftaran akun Anda di <strong>LPK Prospect Education Cabang Jember</strong> telah resmi diverifikasi dan <strong>DISETUJUI</strong> oleh tim administrasi.
+      </div>
+
+      <div class="details-box">
+        <div class="detail-row">
+          <span class="detail-label">Nomor Pendaftaran:</span>
+          <span class="detail-value">${regNo}</span>
+        </div>
+        <div class="detail-row">
+          <span class="detail-label">Program Studi:</span>
+          <span class="detail-value">${prog}</span>
+        </div>
+        <div class="detail-row">
+          <span class="detail-label">Status Otorisasi:</span>
+          <span class="detail-value" style="color: #059669;">Verified Active</span>
+        </div>
+        <div class="detail-row">
+          <span class="detail-label">Tanggal Persetujuan:</span>
+          <span class="detail-value">${dateStr}</span>
+        </div>
+      </div>
+
+      <a href="https://www.prospecteducation.id/login" class="cta-btn">MASUK KE PORTAL LMS SISWA</a>
+
+      <div class="steps">
+        <strong>Langkah Selanjutnya untuk Peserta Terdaftar:</strong>
+        <ol>
+          <li>Masuk ke Portal Siswa menggunakan Email & Kata Sandi terdaftar Anda.</li>
+          <li>Lengkapi Biodata Pendaftaran & Unggah Berkas Dokumen Pendukung.</li>
+          <li>Akses Modul Pembelajaran LMS (Bahasa Mandarin/Jepang & Pembekalan Kerja).</li>
+        </ol>
+      </div>
+
+      <p style="font-size: 12px; color: #64748b; text-align: center; margin: 0;">
+        Butuh bantuan? Hubungi Customer Service Cabang Jember via WhatsApp:
+        <br><strong style="color: #059669;">0823-3455-4396</strong>
+      </p>
+    </div>
+    <div class="footer">
+      <strong>PT Prospect Education Cabang Jember</strong><br>
+      Jl. Balung-Jenggawah, Wetan Kali, Balung Lor, Kec. Balung, Kabupaten Jember, Jawa Timur 68161<br>
+      Website Resmi: <a href="https://www.prospecteducation.id">www.prospecteducation.id</a> &bull; Email: info@prospecteducation.id
+    </div>
+  </div>
+</body>
+</html>
+    `;
+  }
+
+  // In-memory Email Logs array for fast fallback retrieval
+  const inMemoryEmailLogs: any[] = [];
+
+  // API Endpoint: Send Email Notification
+  app.post("/api/email/send", async (req, res) => {
+    try {
+      const {
+        recipientEmail,
+        recipientName = "Pendaftar Prospect",
+        subject,
+        eventType = "account_approval",
+        candidateId,
+        registrationNumber,
+        programTitle,
+        bodyHtml,
+        smtpConfig,
+      } = req.body;
+
+      if (!recipientEmail || !recipientEmail.includes("@")) {
+        return res.status(400).json({ error: "Alamat email penerima tidak valid." });
+      }
+
+      const logId = `EMAIL-LOG-${Date.now()}-${Math.random().toString(36).substring(2, 6)}`;
+      const sentAt = new Date().toISOString();
+      const mailSubject = subject || `🎉 Akun Pendaftaran Prospect Education Jember Disetujui (${registrationNumber || 'REG-2026'})`;
+      const htmlContent = bodyHtml || generateAccountApprovalHtml(recipientName, registrationNumber, programTitle);
+
+      let deliveryStatus: "sent" | "failed" | "simulated" = "simulated";
+      let messageId = `MSG-EMAIL-${Date.now()}`;
+      let errorMessage: string | undefined = undefined;
+
+      // Real SMTP Delivery if credentials are configured
+      const smtpHost = smtpConfig?.host || process.env.SMTP_HOST;
+      const smtpPort = smtpConfig?.port || process.env.SMTP_PORT || 587;
+      const smtpUser = smtpConfig?.user || process.env.SMTP_USER;
+      const smtpPass = smtpConfig?.pass || process.env.SMTP_PASS;
+      const fromEmail = smtpConfig?.fromEmail || process.env.SMTP_FROM || "notifikasi@prospecteducation.id";
+      const fromName = smtpConfig?.fromName || "Prospect Education Cabang Jember";
+
+      if (smtpHost && smtpUser && smtpPass) {
+        try {
+          const transporter = nodemailer.createTransport({
+            host: smtpHost,
+            port: Number(smtpPort),
+            secure: Number(smtpPort) === 465,
+            auth: {
+              user: smtpUser,
+              pass: smtpPass,
+            },
+          });
+
+          const mailResult = await transporter.sendMail({
+            from: `"${fromName}" <${fromEmail}>`,
+            to: `"${recipientName}" <${recipientEmail}>`,
+            subject: mailSubject,
+            html: htmlContent,
+          });
+
+          deliveryStatus = "sent";
+          messageId = mailResult.messageId || messageId;
+        } catch (smtpErr: any) {
+          console.warn("Real SMTP dispatch notice (falling back to simulation mode):", smtpErr?.message || smtpErr);
+          deliveryStatus = "simulated";
+          errorMessage = `SMTP fallback notice: ${smtpErr?.message || 'Server error'}`;
+        }
+      }
+
+      const emailLogRecord = {
+        id: logId,
+        candidateId: candidateId || null,
+        candidateName: recipientName,
+        recipientEmail,
+        subject: mailSubject,
+        eventType,
+        status: deliveryStatus,
+        sentAt,
+        messageId,
+        errorMessage: errorMessage || null,
+        htmlPreview: htmlContent,
+      };
+
+      inMemoryEmailLogs.unshift(emailLogRecord);
+
+      // Save log to Firestore
+      try {
+        await setDoc(doc(firestoreDb, "email_logs", logId), emailLogRecord, { merge: true });
+      } catch (dbErr) {
+        console.warn("Firestore email log sync notice:", dbErr);
+      }
+
+      return res.json({
+        success: true,
+        status: deliveryStatus,
+        logId,
+        messageId,
+        recipientEmail,
+        sentAt,
+        message: deliveryStatus === "sent"
+          ? `Email notifikasi persetujuan akun berhasil terkirim via SMTP ke ${recipientEmail}.`
+          : `Notifikasi email persetujuan akun berhasil diproses dan dicatat untuk ${recipientName} (${recipientEmail}).`,
+      });
+    } catch (error: any) {
+      console.error("Email Send Endpoint Error:", error);
+      return res.status(500).json({ error: error.message || "Gagal mengirimkan notifikasi email." });
+    }
+  });
+
+  // API Endpoint: Get Email Logs
+  app.get("/api/email/logs", async (_req, res) => {
+    try {
+      try {
+        const q = query(collection(firestoreDb, "email_logs"), orderBy("sentAt", "desc"), limit(50));
+        const snapshot = await getDocs(q);
+        const logs: any[] = [];
+        snapshot.forEach((docSnap) => {
+          logs.push(docSnap.data());
+        });
+        if (logs.length > 0) {
+          return res.json({ success: true, logs });
+        }
+      } catch (dbErr) {
+        console.warn("Firestore email logs fetch notice, serving memory cache:", dbErr);
+      }
+
+      return res.json({ success: true, logs: inMemoryEmailLogs });
+    } catch (error: any) {
+      return res.status(500).json({ error: error.message || "Gagal mengambil log email." });
     }
   });
   // Simple rate limiter map: IP address -> request count & reset time

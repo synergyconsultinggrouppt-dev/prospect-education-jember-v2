@@ -477,7 +477,7 @@ export const InterviewMatchmakingModule: React.FC = () => {
             </button>
           </div>
 
-          <div className="bg-slate-50 dark:bg-slate-950 p-6 rounded-2xl border border-slate-300 dark:border-slate-800 space-y-6 max-w-3xl mx-auto font-sans">
+          <div className="bg-slate-50 dark:bg-slate-950 p-6 rounded-2xl border border-slate-300 dark:border-slate-800 space-y-6 max-w-3xl mx-auto font-sans printable-content">
             <div className="text-center border-b-2 border-slate-800 dark:border-slate-200 pb-4 space-y-1">
               <h2 className="text-xl font-bold tracking-widest text-slate-900 dark:text-white">
                 {isJapan ? '履 歴 書 (RIREKISHO)' : 'TAIWAN IFP STUDENT RESUME'}

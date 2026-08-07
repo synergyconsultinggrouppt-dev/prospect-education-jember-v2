@@ -353,6 +353,34 @@ export interface WhatsAppNotificationLog {
   errorMessage?: string;
 }
 
+export interface EmailGatewayConfig {
+  enabled: boolean;
+  smtpHost: string;
+  smtpPort: number;
+  smtpSecure: boolean;
+  smtpUser: string;
+  smtpPass: string;
+  fromEmail: string;
+  fromName: string;
+  notifyOnAccountApproval: boolean;
+  notifyOnLoaIssued: boolean;
+  notifyOnRegistration: boolean;
+}
+
+export interface EmailNotificationLog {
+  id: string;
+  candidateId?: string;
+  candidateName: string;
+  recipientEmail: string;
+  subject: string;
+  eventType: 'account_approval' | 'loa_issued' | 'registration_welcome' | 'manual';
+  status: 'sent' | 'failed' | 'simulated';
+  sentAt: string;
+  messageId?: string;
+  errorMessage?: string;
+  htmlPreview?: string;
+}
+
 export interface AppNotification {
   id: string;
   candidateId?: string;

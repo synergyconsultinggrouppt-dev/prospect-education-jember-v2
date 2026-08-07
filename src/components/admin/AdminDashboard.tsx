@@ -11,7 +11,11 @@ import { AdminRechartsAnalytics } from '../analytics/AdminRechartsAnalytics';
 import { AdminPDFReportModal } from '../reports/AdminPDFReportModal';
 import { LoaVerificationModal } from '../LoaVerificationModal';
 import { WhatsAppGatewayModal } from './WhatsAppGatewayModal';
+import { EmailGatewayModal } from './EmailGatewayModal';
 import { AdminAttendanceMonitoring } from './AdminAttendanceMonitoring';
+import { AdminProgramManager } from './AdminProgramManager';
+import { AdminLMSManager } from './AdminLMSManager';
+import { AdminWebsiteContentManager } from './AdminWebsiteContentManager';
 import {
   Users,
   FileCheck,
@@ -46,6 +50,7 @@ import {
   Trash2,
   QrCode,
   MapPin,
+  Mail,
 } from 'lucide-react';
 import {
   BarChart,
@@ -74,6 +79,8 @@ export const AdminDashboard: React.FC = () => {
     resetDataToDefault,
     whatsappConfig,
     updateWhatsAppConfig,
+    emailConfig,
+    updateEmailConfig,
     addAuditLog,
   } = useApp();
 
@@ -89,9 +96,22 @@ export const AdminDashboard: React.FC = () => {
   const [isPdfReportModalOpen, setIsPdfReportModalOpen] = useState(false);
   const [isVerificationModalOpen, setIsVerificationModalOpen] = useState(false);
   const [isWhatsAppModalOpen, setIsWhatsAppModalOpen] = useState(false);
+  const [isEmailModalOpen, setIsEmailModalOpen] = useState(false);
   const [selectedPendingUserForDetail, setSelectedPendingUserForDetail] = useState<Candidate | null>(null);
   const [activeTab, setActiveTab] = useState<
-    'candidates' | 'pending_users' | 'verifications' | 'loa' | 'financials' | 'attendance_monitoring' | 'users' | 'webmaster_features' | 'audit_log' | 'settings'
+    | 'pending_users'
+    | 'candidates'
+    | 'verifications'
+    | 'loa'
+    | 'program_manager'
+    | 'lms_manager'
+    | 'attendance_monitoring'
+    | 'website_content'
+    | 'financials'
+    | 'settings'
+    | 'webmaster_features'
+    | 'audit_log'
+    | 'users'
   >('pending_users');
 
   const handleApproveUser = (candidate: Candidate) => {
@@ -453,6 +473,15 @@ export const AdminDashboard: React.FC = () => {
 
         <div className="flex flex-wrap items-center gap-3">
           <button
+            onClick={() => setIsEmailModalOpen(true)}
+            className="px-3.5 py-2.5 bg-indigo-900 hover:bg-indigo-800 text-indigo-100 border border-indigo-400/40 font-bold text-xs rounded-xl shadow-xs transition flex items-center gap-2 cursor-pointer"
+            title="Kelola Integrasi Notifikasi Email Otomatis & Log SMTP"
+          >
+            <Mail className="w-4 h-4 text-indigo-300" />
+            <span>Gateway Email Notifikasi</span>
+          </button>
+
+          <button
             onClick={() => setIsWhatsAppModalOpen(true)}
             className="px-3.5 py-2.5 bg-emerald-800 hover:bg-emerald-700 text-emerald-100 border border-emerald-400/40 font-bold text-xs rounded-xl shadow-xs transition flex items-center gap-2 cursor-pointer"
             title="Kelola & Integrasi Gateway WhatsApp Notifikasi Otomatis"
@@ -549,154 +578,214 @@ export const AdminDashboard: React.FC = () => {
       {/* Recharts Analytics Visualization Component */}
       <AdminRechartsAnalytics candidates={safeCandidates} />
 
-      {/* Tabs Switcher (Mobile Select + Horizontal Scrollbar) */}
-      <div className="space-y-3 border-b border-slate-200 pb-3">
-        {/* Mobile Quick Navigation Dropdown */}
+      {/* Tabs Switcher (Mobile Select + Categorized Header Navigation) */}
+      <div className="space-y-4 border-b border-slate-200 pb-4">
+        {/* Mobile Navigation Dropdown */}
         <div className="md:hidden w-full bg-white p-3 rounded-2xl border border-slate-200 shadow-xs">
           <label className="block text-xs font-bold text-blue-900 mb-1.5 flex items-center justify-between">
             <span>📍 Navigasi Admin & Manajemen:</span>
-            <span className="text-[10px] text-slate-500 font-normal">Tap untuk ganti menu</span>
+            <span className="text-[10px] text-slate-500 font-normal">Pilih modul</span>
           </label>
           <select
             value={activeTab}
             onChange={(e) => setActiveTab(e.target.value as any)}
             className="w-full bg-slate-50 text-blue-900 font-bold text-xs p-3 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-sky-500 cursor-pointer"
           >
-            <option value="pending_users">⏳ Persetujuan User Pending ({pendingCandidates.length})</option>
-            <option value="candidates">👥 Daftar Peserta & Status Alur</option>
-            <option value="verifications">🛡️ Verifikasi Dokumen Syarat</option>
-            <option value="loa">📋 Persetujuan Surat LoA (Direksi)</option>
-            <option value="attendance_monitoring">📊 Monitoring Absensi QR Code & GPS</option>
-            <option value="financials">💰 Keuangan & Kas Jember</option>
-            <option value="settings">⚙️ Pengaturan Lembaga & Template Dokumen</option>
-            <option value="webmaster_features">🌐 Pengelola Website & Fitur Publik</option>
-            <option value="audit_log">🛡️ Audit Log Aktivitas Sistem</option>
-            {isSuperAdmin && <option value="users">👑 Hak Akses (RBAC) & System Control</option>}
+            <optgroup label="👥 1. Pendaftaran & Peserta">
+              <option value="pending_users">⏳ Persetujuan User Pending ({pendingCandidates.length})</option>
+              <option value="candidates">👥 Daftar Peserta & Status Alur</option>
+              <option value="verifications">🛡️ Verifikasi Dokumen Syarat</option>
+              <option value="loa">📋 Persetujuan Surat LoA (Direksi)</option>
+            </optgroup>
+            <optgroup label="🎓 2. Program & Pembelajaran (LMS)">
+              <option value="program_manager">📚 Kelola Program Pelatihan (Tambah/Edit/Hapus)</option>
+              <option value="lms_manager">📖 Kelola LMS & Modul Video PDF</option>
+              <option value="attendance_monitoring">📊 Monitoring Absensi QR & GPS</option>
+            </optgroup>
+            <optgroup label="🌐 3. Website & Public Content">
+              <option value="website_content">📢 Kelola Website, Teks Banner & Berita</option>
+              <option value="settings">⚙️ Pengaturan Lembaga & Template Dokumen</option>
+              <option value="webmaster_features">🌐 Pengelola Fitur Website</option>
+            </optgroup>
+            <optgroup label="💰 4. Keuangan, Audit & Hak Akses">
+              <option value="financials">💰 Keuangan & Kas Jember</option>
+              <option value="audit_log">🛡️ Audit Log Aktivitas System</option>
+              {isSuperAdmin && <option value="users">👑 Hak Akses (RBAC) & System Control</option>}
+            </optgroup>
           </select>
         </div>
 
-        <div className="flex flex-col md:flex-row md:items-center justify-between gap-3">
-          <div className="flex items-center gap-2 overflow-x-auto whitespace-nowrap pb-2 max-w-full no-scrollbar">
-            <button
-              onClick={() => setActiveTab('pending_users')}
-              className={`px-4 py-2 rounded-xl text-xs font-bold transition flex items-center gap-2 shrink-0 cursor-pointer ${
-                activeTab === 'pending_users'
-                  ? 'bg-[#0F3D7A] text-amber-300 shadow-xs border border-blue-900'
-                  : 'bg-amber-50 dark:bg-amber-950/40 text-amber-900 dark:text-amber-200 hover:bg-amber-100 border border-amber-200 dark:border-amber-800'
-              }`}
-            >
-              <UserCheck className="w-4 h-4 text-amber-500" />
-              <span>Persetujuan User</span>
-              {pendingCandidates.length > 0 && (
-                <span className="bg-amber-500 text-slate-950 text-[10px] font-black px-2 py-0.5 rounded-full animate-pulse">
-                  {pendingCandidates.length}
-                </span>
-              )}
-            </button>
-
-            <button
-              onClick={() => setActiveTab('candidates')}
-              className={`px-4 py-2 rounded-xl text-xs font-bold transition shrink-0 cursor-pointer ${
-                activeTab === 'candidates'
-                  ? 'bg-[#0F3D7A] text-white shadow-xs border border-blue-900'
-                  : 'bg-white text-slate-700 hover:bg-slate-100 border border-slate-200'
-              }`}
-            >
-              Daftar Peserta & Status
-            </button>
-
-            <button
-              onClick={() => setActiveTab('verifications')}
-              className={`px-4 py-2 rounded-xl text-xs font-bold transition shrink-0 cursor-pointer ${
-                activeTab === 'verifications'
-                  ? 'bg-[#0F3D7A] text-white shadow-xs border border-blue-900'
-                  : 'bg-white text-slate-700 hover:bg-slate-100 border border-slate-200'
-              }`}
-            >
-              Verifikasi Dokumen
-            </button>
-
-            <button
-              onClick={() => setActiveTab('loa')}
-              className={`px-4 py-2 rounded-xl text-xs font-bold transition shrink-0 cursor-pointer ${
-                activeTab === 'loa'
-                  ? 'bg-[#0F3D7A] text-white shadow-xs border border-blue-900'
-                  : 'bg-white text-slate-700 hover:bg-slate-100 border border-slate-200'
-              }`}
-            >
-              Persetujuan LoA
-            </button>
-
-            <button
-              onClick={() => setActiveTab('attendance_monitoring')}
-              className={`px-4 py-2 rounded-xl text-xs font-bold transition flex items-center gap-1.5 shrink-0 cursor-pointer ${
-                activeTab === 'attendance_monitoring'
-                  ? 'bg-[#0F3D7A] text-amber-300 shadow-xs font-extrabold border border-blue-900'
-                  : 'bg-amber-50 text-amber-900 hover:bg-amber-100 border border-amber-200'
-              }`}
-            >
-              <QrCode className="w-4 h-4 text-amber-600" />
-              <span>Presensi QR & GPS</span>
-            </button>
-
-            <button
-              onClick={() => setActiveTab('financials')}
-              className={`px-4 py-2 rounded-xl text-xs font-bold transition shrink-0 cursor-pointer ${
-                activeTab === 'financials'
-                  ? 'bg-[#0F3D7A] text-white shadow-xs border border-blue-900'
-                  : 'bg-white text-slate-700 hover:bg-slate-100 border border-slate-200'
-              }`}
-            >
-              Keuangan & Kas Jember
-            </button>
-
-            <button
-              onClick={() => setActiveTab('settings')}
-              className={`px-4 py-2 rounded-xl text-xs font-bold transition flex items-center gap-1.5 shrink-0 cursor-pointer ${
-                activeTab === 'settings'
-                  ? 'bg-[#0F3D7A] text-sky-200 shadow-xs font-bold border border-blue-900'
-                  : 'bg-sky-50 text-blue-900 hover:bg-sky-100 border border-sky-200'
-              }`}
-            >
-              <span>⚙️ Pengaturan Lembaga</span>
-            </button>
-
-            <button
-              onClick={() => setActiveTab('webmaster_features')}
-              className={`px-4 py-2 rounded-xl text-xs font-bold transition flex items-center gap-1.5 shrink-0 cursor-pointer ${
-                activeTab === 'webmaster_features'
-                  ? 'bg-indigo-900 text-white shadow-xs font-bold'
-                  : 'bg-indigo-50 text-indigo-900 hover:bg-indigo-100 border border-indigo-200'
-              }`}
-            >
-              <span>🌐 Pengelola Fitur</span>
-            </button>
-
-            <button
-              onClick={() => setActiveTab('audit_log')}
-              className={`px-4 py-2 rounded-xl text-xs font-bold transition flex items-center gap-1.5 shrink-0 cursor-pointer ${
-                activeTab === 'audit_log'
-                  ? 'bg-slate-900 text-sky-300 shadow-xs font-bold'
-                  : 'bg-slate-50 text-slate-800 hover:bg-slate-100 border border-slate-200'
-              }`}
-            >
-              <ShieldCheck className="w-4 h-4 text-emerald-500" />
-              <span>🛡️ Audit Log</span>
-            </button>
-
-            {isSuperAdmin && (
+        {/* Desktop Categorized Navigation Bar */}
+        <div className="hidden md:flex flex-col space-y-3">
+          <div className="flex items-center gap-2 overflow-x-auto whitespace-nowrap pb-1 no-scrollbar">
+            {/* Group 1: Pendaftaran & Peserta */}
+            <div className="flex items-center gap-1.5 bg-slate-100 p-1.5 rounded-2xl border border-slate-200">
               <button
-                onClick={() => setActiveTab('users')}
-                className={`px-4 py-2 rounded-xl text-xs font-bold transition flex items-center gap-1.5 shrink-0 cursor-pointer ${
-                  activeTab === 'users'
-                    ? 'bg-[#0F3D7A] text-amber-300 shadow-xs font-bold border border-blue-900'
-                    : 'bg-amber-50 text-amber-900 hover:bg-amber-100 border border-amber-200'
+                onClick={() => setActiveTab('pending_users')}
+                className={`px-3 py-1.5 rounded-xl text-xs font-bold transition flex items-center gap-1.5 shrink-0 cursor-pointer ${
+                  activeTab === 'pending_users'
+                    ? 'bg-[#0F3D7A] text-amber-300 shadow-xs'
+                    : 'bg-white text-slate-700 hover:bg-slate-200'
                 }`}
               >
-                <span>👑 Hak Akses System</span>
+                <UserCheck className="w-3.5 h-3.5 text-amber-500" />
+                <span>Persetujuan User</span>
+                {pendingCandidates.length > 0 && (
+                  <span className="bg-amber-500 text-slate-950 text-[10px] font-black px-1.5 py-0.5 rounded-full animate-pulse">
+                    {pendingCandidates.length}
+                  </span>
+                )}
               </button>
-            )}
+
+              <button
+                onClick={() => setActiveTab('candidates')}
+                className={`px-3 py-1.5 rounded-xl text-xs font-bold transition shrink-0 cursor-pointer ${
+                  activeTab === 'candidates'
+                    ? 'bg-[#0F3D7A] text-white shadow-xs'
+                    : 'bg-white text-slate-700 hover:bg-slate-200'
+                }`}
+              >
+                Peserta & Status
+              </button>
+
+              <button
+                onClick={() => setActiveTab('verifications')}
+                className={`px-3 py-1.5 rounded-xl text-xs font-bold transition shrink-0 cursor-pointer ${
+                  activeTab === 'verifications'
+                    ? 'bg-[#0F3D7A] text-white shadow-xs'
+                    : 'bg-white text-slate-700 hover:bg-slate-200'
+                }`}
+              >
+                Verifikasi Dokumen
+              </button>
+
+              <button
+                onClick={() => setActiveTab('loa')}
+                className={`px-3 py-1.5 rounded-xl text-xs font-bold transition shrink-0 cursor-pointer ${
+                  activeTab === 'loa'
+                    ? 'bg-[#0F3D7A] text-white shadow-xs'
+                    : 'bg-white text-slate-700 hover:bg-slate-200'
+                }`}
+              >
+                Approval LoA
+              </button>
+            </div>
+
+            {/* Group 2: Program & Pembelajaran */}
+            <div className="flex items-center gap-1.5 bg-blue-50/70 p-1.5 rounded-2xl border border-blue-200/80">
+              <button
+                onClick={() => setActiveTab('program_manager')}
+                className={`px-3 py-1.5 rounded-xl text-xs font-bold transition flex items-center gap-1.5 shrink-0 cursor-pointer ${
+                  activeTab === 'program_manager'
+                    ? 'bg-[#0F3D7A] text-amber-300 shadow-xs'
+                    : 'bg-white text-blue-950 hover:bg-blue-100'
+                }`}
+              >
+                <BookOpen className="w-3.5 h-3.5 text-blue-600" />
+                <span>📚 Kelola Program</span>
+              </button>
+
+              <button
+                onClick={() => setActiveTab('lms_manager')}
+                className={`px-3 py-1.5 rounded-xl text-xs font-bold transition flex items-center gap-1.5 shrink-0 cursor-pointer ${
+                  activeTab === 'lms_manager'
+                    ? 'bg-[#0F3D7A] text-amber-300 shadow-xs'
+                    : 'bg-white text-blue-950 hover:bg-blue-100'
+                }`}
+              >
+                <span>📖 Kelola LMS</span>
+              </button>
+
+              <button
+                onClick={() => setActiveTab('attendance_monitoring')}
+                className={`px-3 py-1.5 rounded-xl text-xs font-bold transition flex items-center gap-1.5 shrink-0 cursor-pointer ${
+                  activeTab === 'attendance_monitoring'
+                    ? 'bg-[#0F3D7A] text-amber-300 shadow-xs'
+                    : 'bg-white text-blue-950 hover:bg-blue-100'
+                }`}
+              >
+                <QrCode className="w-3.5 h-3.5 text-amber-600" />
+                <span>Presensi QR & GPS</span>
+              </button>
+            </div>
+
+            {/* Group 3: Website & Public Content */}
+            <div className="flex items-center gap-1.5 bg-indigo-50/70 p-1.5 rounded-2xl border border-indigo-200/80">
+              <button
+                onClick={() => setActiveTab('website_content')}
+                className={`px-3 py-1.5 rounded-xl text-xs font-bold transition flex items-center gap-1.5 shrink-0 cursor-pointer ${
+                  activeTab === 'website_content'
+                    ? 'bg-indigo-900 text-white shadow-xs'
+                    : 'bg-white text-indigo-950 hover:bg-indigo-100'
+                }`}
+              >
+                <Newspaper className="w-3.5 h-3.5 text-indigo-600" />
+                <span>📢 Kelola Website</span>
+              </button>
+
+              <button
+                onClick={() => setActiveTab('settings')}
+                className={`px-3 py-1.5 rounded-xl text-xs font-bold transition shrink-0 cursor-pointer ${
+                  activeTab === 'settings'
+                    ? 'bg-indigo-900 text-white shadow-xs'
+                    : 'bg-white text-indigo-950 hover:bg-indigo-100'
+                }`}
+              >
+                ⚙️ Pengaturan Lembaga
+              </button>
+
+              <button
+                onClick={() => setActiveTab('webmaster_features')}
+                className={`px-3 py-1.5 rounded-xl text-xs font-bold transition shrink-0 cursor-pointer ${
+                  activeTab === 'webmaster_features'
+                    ? 'bg-indigo-900 text-white shadow-xs'
+                    : 'bg-white text-indigo-950 hover:bg-indigo-100'
+                }`}
+              >
+                🌐 Saklar Fitur
+              </button>
+            </div>
+
+            {/* Group 4: Keuangan & System */}
+            <div className="flex items-center gap-1.5 bg-slate-100 p-1.5 rounded-2xl border border-slate-200">
+              <button
+                onClick={() => setActiveTab('financials')}
+                className={`px-3 py-1.5 rounded-xl text-xs font-bold transition shrink-0 cursor-pointer ${
+                  activeTab === 'financials'
+                    ? 'bg-[#0F3D7A] text-white shadow-xs'
+                    : 'bg-white text-slate-700 hover:bg-slate-200'
+                }`}
+              >
+                💰 Keuangan
+              </button>
+
+              <button
+                onClick={() => setActiveTab('audit_log')}
+                className={`px-3 py-1.5 rounded-xl text-xs font-bold transition flex items-center gap-1 shrink-0 cursor-pointer ${
+                  activeTab === 'audit_log'
+                    ? 'bg-slate-900 text-sky-300 shadow-xs'
+                    : 'bg-white text-slate-700 hover:bg-slate-200'
+                }`}
+              >
+                <ShieldCheck className="w-3.5 h-3.5 text-emerald-600" />
+                <span>Audit Log</span>
+              </button>
+
+              {isSuperAdmin && (
+                <button
+                  onClick={() => setActiveTab('users')}
+                  className={`px-3 py-1.5 rounded-xl text-xs font-bold transition flex items-center gap-1 shrink-0 cursor-pointer ${
+                    activeTab === 'users'
+                      ? 'bg-[#0F3D7A] text-amber-300 shadow-xs'
+                      : 'bg-amber-100 text-amber-950 hover:bg-amber-200'
+                  }`}
+                >
+                  👑 Hak Akses
+                </button>
+              )}
+            </div>
           </div>
+        </div>
 
         {/* Search Input */}
         <div className="relative w-full sm:w-64">
@@ -710,7 +799,6 @@ export const AdminDashboard: React.FC = () => {
           />
         </div>
       </div>
-    </div>
 
       {/* VIEW 0: PENDING USERS REGISTRATION APPROVAL */}
       {activeTab === 'pending_users' && (
@@ -1365,6 +1453,15 @@ export const AdminDashboard: React.FC = () => {
       {/* VIEW 9: REALTIME ATTENDANCE MONITORING MODULE */}
       {activeTab === 'attendance_monitoring' && <AdminAttendanceMonitoring />}
 
+      {/* VIEW 10: PROGRAM MANAGEMENT MODULE */}
+      {activeTab === 'program_manager' && <AdminProgramManager />}
+
+      {/* VIEW 11: LMS MODULE MANAGEMENT */}
+      {activeTab === 'lms_manager' && <AdminLMSManager />}
+
+      {/* VIEW 12: WEBSITE CONTENT & PUBLIC ANNOUNCEMENTS */}
+      {activeTab === 'website_content' && <AdminWebsiteContentManager />}
+
       {/* MODAL 1: ADD STUDENT (SUPER ADMIN) */}
       {isAddStudentModalOpen && (
         <div className="fixed inset-0 bg-slate-950/80 backdrop-blur-xs z-50 flex items-center justify-center p-4">
@@ -1888,6 +1985,15 @@ export const AdminDashboard: React.FC = () => {
         onClose={() => setIsWhatsAppModalOpen(false)}
         config={whatsappConfig}
         onSaveConfig={updateWhatsAppConfig}
+        candidates={safeCandidates}
+      />
+
+      {/* Email Gateway Notification Integration Modal */}
+      <EmailGatewayModal
+        isOpen={isEmailModalOpen}
+        onClose={() => setIsEmailModalOpen(false)}
+        config={emailConfig}
+        onSaveConfig={updateEmailConfig}
         candidates={safeCandidates}
       />
     </div>

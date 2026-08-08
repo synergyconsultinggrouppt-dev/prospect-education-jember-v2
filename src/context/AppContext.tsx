@@ -31,7 +31,15 @@ import {
   EmailGatewayConfig,
   EmailNotificationLog,
   AttendanceRecord,
+  LetterheadConfig,
+  LetterTemplate,
+  IssuedLetter,
 } from '../types';
+import {
+  DEFAULT_LETTERHEAD_CONFIG,
+  DEFAULT_LETTER_TEMPLATES as INITIAL_LETTER_TEMPLATES,
+  DEFAULT_ISSUED_LETTERS as INITIAL_ISSUED_LETTERS,
+} from '../data/letterTemplatesData';
 import {
   DEFAULT_WA_CONFIG,
   triggerDocumentStatusWhatsApp,
@@ -201,6 +209,17 @@ interface AppContextType {
   sendAdminChatMessage: (text: string) => void;
   feedbacks: FeedbackItem[];
   submitFeedback: (feedback: Omit<FeedbackItem, 'id' | 'createdAt'>) => void;
+
+  // Official Correspondence (Surat Menyurat & Kop Surat)
+  letterheadConfig: LetterheadConfig;
+  updateLetterheadConfig: (config: LetterheadConfig) => void;
+  letterTemplates: LetterTemplate[];
+  addLetterTemplate: (template: Omit<LetterTemplate, 'id' | 'updatedAt'>) => void;
+  updateLetterTemplate: (id: string, updates: Partial<LetterTemplate>) => void;
+  deleteLetterTemplate: (id: string) => void;
+  issuedLetters: IssuedLetter[];
+  issueNewLetter: (letter: Omit<IssuedLetter, 'id' | 'issueDate'>) => IssuedLetter;
+  deleteIssuedLetter: (id: string) => void;
 
   // WhatsApp Gateway Notification Settings
   whatsappConfig: WhatsAppGatewayConfig;
@@ -1167,6 +1186,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     setAuthToken(null);
     setRoleState('visitor');
     setActiveTab('beranda');
+    setCurrentCandidateId('');
 
     try {
       fetch('/api/auth/logout', { method: 'POST' }).catch(() => {});
@@ -1875,16 +1895,102 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     setFeedbacks((prev) => [newFb, ...prev]);
   };
 
+  // Official Correspondence (Surat Menyurat & Kop Surat)
+  const [letterheadConfig, setLetterheadConfig] = useState<LetterheadConfig>(() => {
+    try {
+      const saved = localStorage.getItem('prospect_letterhead_config');
+      return saved ? JSON.parse(saved) : DEFAULT_LETTERHEAD_CONFIG;
+    } catch {
+      return DEFAULT_LETTERHEAD_CONFIG;
+    }
+  });
+
+  const [letterTemplates, setLetterTemplates] = useState<LetterTemplate[]>(() => {
+    try {
+      const saved = localStorage.getItem('prospect_letter_templates');
+      return saved ? JSON.parse(saved) : INITIAL_LETTER_TEMPLATES;
+    } catch {
+      return INITIAL_LETTER_TEMPLATES;
+    }
+  });
+
+  const [issuedLetters, setIssuedLetters] = useState<IssuedLetter[]>(() => {
+    try {
+      const saved = localStorage.getItem('prospect_issued_letters');
+      return saved ? JSON.parse(saved) : INITIAL_ISSUED_LETTERS;
+    } catch {
+      return INITIAL_ISSUED_LETTERS;
+    }
+  });
+
+  useEffect(() => {
+    localStorage.setItem('prospect_letterhead_config', JSON.stringify(letterheadConfig));
+  }, [letterheadConfig]);
+
+  useEffect(() => {
+    localStorage.setItem('prospect_letter_templates', JSON.stringify(letterTemplates));
+  }, [letterTemplates]);
+
+  useEffect(() => {
+    localStorage.setItem('prospect_issued_letters', JSON.stringify(issuedLetters));
+  }, [issuedLetters]);
+
+  const updateLetterheadConfig = (config: LetterheadConfig) => {
+    setLetterheadConfig(config);
+  };
+
+  const addLetterTemplate = (template: Omit<LetterTemplate, 'id' | 'updatedAt'>) => {
+    const today = new Date().toISOString().split('T')[0];
+    const newTmpl: LetterTemplate = {
+      ...template,
+      id: `tmpl-${Date.now()}`,
+      updatedAt: today,
+    };
+    setLetterTemplates((prev) => [newTmpl, ...prev]);
+  };
+
+  const updateLetterTemplate = (id: string, updates: Partial<LetterTemplate>) => {
+    const today = new Date().toISOString().split('T')[0];
+    setLetterTemplates((prev) =>
+      prev.map((t) => (t.id === id ? { ...t, ...updates, updatedAt: today } : t))
+    );
+  };
+
+  const deleteLetterTemplate = (id: string) => {
+    setLetterTemplates((prev) => prev.filter((t) => t.id !== id));
+  };
+
+  const issueNewLetter = (letter: Omit<IssuedLetter, 'id' | 'issueDate'>): IssuedLetter => {
+    const today = new Date().toISOString().split('T')[0];
+    const newLetter: IssuedLetter = {
+      ...letter,
+      id: `issue-${Date.now()}`,
+      issueDate: today,
+    };
+    setIssuedLetters((prev) => [newLetter, ...prev]);
+    return newLetter;
+  };
+
+  const deleteIssuedLetter = (id: string) => {
+    setIssuedLetters((prev) => prev.filter((l) => l.id !== id));
+  };
+
   const resetDataToDefault = () => {
     localStorage.removeItem('prospect_candidates');
     localStorage.removeItem('prospect_lms_modules');
     localStorage.removeItem('prospect_financial_records');
     localStorage.removeItem('prospect_news');
+    localStorage.removeItem('prospect_letterhead_config');
+    localStorage.removeItem('prospect_letter_templates');
+    localStorage.removeItem('prospect_issued_letters');
     setCandidates(INITIAL_CANDIDATES);
     setLmsModules(INITIAL_LMS_MODULES);
     setFinancialRecords(INITIAL_FINANCIAL_RECORDS);
     setNews(INITIAL_NEWS);
     setChatMessages(INITIAL_CHAT);
+    setLetterheadConfig(DEFAULT_LETTERHEAD_CONFIG);
+    setLetterTemplates(INITIAL_LETTER_TEMPLATES);
+    setIssuedLetters(INITIAL_ISSUED_LETTERS);
   };
 
   return (
@@ -1977,6 +2083,15 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
         sendAdminChatMessage,
         feedbacks,
         submitFeedback,
+        letterheadConfig,
+        updateLetterheadConfig,
+        letterTemplates,
+        addLetterTemplate,
+        updateLetterTemplate,
+        deleteLetterTemplate,
+        issuedLetters,
+        issueNewLetter,
+        deleteIssuedLetter,
         whatsappConfig,
         updateWhatsAppConfig,
         emailConfig,

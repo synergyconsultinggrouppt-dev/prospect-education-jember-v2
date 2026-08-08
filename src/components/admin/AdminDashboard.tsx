@@ -16,6 +16,7 @@ import { AdminAttendanceMonitoring } from './AdminAttendanceMonitoring';
 import { AdminProgramManager } from './AdminProgramManager';
 import { AdminLMSManager } from './AdminLMSManager';
 import { AdminWebsiteContentManager } from './AdminWebsiteContentManager';
+import { OfficialCorrespondenceManager } from './OfficialCorrespondenceManager';
 import {
   Users,
   FileCheck,
@@ -112,6 +113,7 @@ export const AdminDashboard: React.FC = () => {
     | 'webmaster_features'
     | 'audit_log'
     | 'users'
+    | 'correspondence'
   >('pending_users');
 
   const handleApproveUser = (candidate: Candidate) => {
@@ -605,6 +607,7 @@ export const AdminDashboard: React.FC = () => {
             <optgroup label="🌐 3. Website & Public Content">
               <option value="website_content">📢 Kelola Website, Teks Banner & Berita</option>
               <option value="settings">⚙️ Pengaturan Lembaga & Template Dokumen</option>
+              <option value="correspondence">✉️ Surat Menyurat, Kop & Logo Lembaga</option>
               <option value="webmaster_features">🌐 Pengelola Fitur Website</option>
             </optgroup>
             <optgroup label="💰 4. Keuangan, Audit & Hak Akses">
@@ -731,7 +734,19 @@ export const AdminDashboard: React.FC = () => {
                     : 'bg-white text-indigo-950 hover:bg-indigo-100'
                 }`}
               >
-                ⚙️ Pengaturan Lembaga
+                ⚙️ Pengaturan
+              </button>
+
+              <button
+                onClick={() => setActiveTab('correspondence')}
+                className={`px-3 py-1.5 rounded-xl text-xs font-bold transition flex items-center gap-1.5 shrink-0 cursor-pointer ${
+                  activeTab === 'correspondence'
+                    ? 'bg-indigo-900 text-amber-300 shadow-xs'
+                    : 'bg-white text-indigo-950 hover:bg-indigo-100'
+                }`}
+              >
+                <FileText className="w-3.5 h-3.5 text-indigo-600" />
+                <span>✉️ Kop & Surat Menyurat</span>
               </button>
 
               <button
@@ -1461,6 +1476,9 @@ export const AdminDashboard: React.FC = () => {
 
       {/* VIEW 12: WEBSITE CONTENT & PUBLIC ANNOUNCEMENTS */}
       {activeTab === 'website_content' && <AdminWebsiteContentManager />}
+
+      {/* VIEW 13: OFFICIAL CORRESPONDENCE & LETTERHEAD MANAGER */}
+      {activeTab === 'correspondence' && <OfficialCorrespondenceManager />}
 
       {/* MODAL 1: ADD STUDENT (SUPER ADMIN) */}
       {isAddStudentModalOpen && (

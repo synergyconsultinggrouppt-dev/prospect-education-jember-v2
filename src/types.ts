@@ -433,6 +433,40 @@ export interface LetterheadConfig {
   defaultSignerNip: string;
   signatureUrl?: string;
   stempelUrl?: string;
+  enableQrVerification?: boolean;
+  qrPosition?: 'bottom_footer' | 'top_kop' | 'both';
+  qrVerificationBaseUrl?: string;
+  qrLabelText?: string;
+  enableDigitalHash?: boolean;
+}
+
+export interface LetterStyleConfig {
+  fontFamily?: string;
+  fontSize?: string;
+  lineHeight?: string;
+  paddingTop?: string;
+  paddingBottom?: string;
+  paddingLeft?: string;
+  paddingRight?: string;
+  marginTop?: string;
+  marginBottom?: string;
+  customCss?: string;
+}
+
+export interface LetterTemplateVersion {
+  id: string;
+  versionNumber: number;
+  title: string;
+  subject: string;
+  numberFormat: string;
+  bodyContent: string;
+  signerName?: string;
+  signerTitle?: string;
+  signerNip?: string;
+  styleConfig?: LetterStyleConfig;
+  savedAt: string;
+  savedBy?: string;
+  changeNote?: string;
 }
 
 export interface LetterTemplate {
@@ -448,7 +482,9 @@ export interface LetterTemplate {
   signerNip?: string;
   signatureUrl?: string;
   stempelUrl?: string;
+  styleConfig?: LetterStyleConfig;
   updatedAt: string;
+  versionHistory?: LetterTemplateVersion[];
 }
 
 export interface IssuedLetter {
@@ -467,5 +503,7 @@ export interface IssuedLetter {
   issuedBy: string;
   status: 'published' | 'draft' | 'revoked';
   downloadCount: number;
+  verificationHash?: string;
+  verificationUrl?: string;
 }
 

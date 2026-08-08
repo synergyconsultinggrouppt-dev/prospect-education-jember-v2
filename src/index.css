@@ -252,5 +252,156 @@ body {
     page-break-inside: avoid !important;
     break-inside: avoid !important;
   }
+
+  /* 10. Dynamic Kop Surat Auto-Scaling Across Paper Formats (A4, F4, Letter) */
+  .kop-surat-container {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+    width: 100% !important;
+    gap: 16px !important;
+    border-bottom: 1px solid #0f172a !important;
+    padding-bottom: 12px !important;
+    margin-bottom: 4px !important;
+    page-break-inside: avoid !important;
+    break-inside: avoid !important;
+  }
+
+  .kop-logo {
+    object-fit: contain !important;
+    flex-shrink: 0 !important;
+    transition: all 0.2s ease !important;
+  }
+
+  .kop-text-area {
+    flex: 1 1 auto !important;
+    text-align: center !important;
+  }
+
+  .kop-title {
+    font-weight: 800 !important;
+    text-transform: uppercase !important;
+    color: #0f2942 !important;
+    letter-spacing: 0.02em !important;
+    margin: 0 !important;
+  }
+
+  .kop-subtitle {
+    font-weight: 700 !important;
+    text-transform: uppercase !important;
+    color: #1e293b !important;
+    margin-top: 2px !important;
+  }
+
+  .kop-legal {
+    font-weight: 500 !important;
+    color: #475569 !important;
+    margin-top: 2px !important;
+  }
+
+  .kop-address, .kop-contact {
+    color: #334155 !important;
+    margin-top: 2px !important;
+  }
+
+  .kop-divider {
+    border-bottom: 4px double #0f172a !important;
+    margin-top: -3px !important;
+    margin-bottom: 16px !important;
+    width: 100% !important;
+  }
+
+  /* Paper Format Specific Auto-Scaling via Media Queries */
+
+  /* Standard A4 Paper (210mm x 297mm) */
+  @media print and (max-width: 212mm) {
+    @page {
+      size: A4 portrait;
+      margin: 10mm 12mm 10mm 12mm;
+    }
+    .kop-logo {
+      width: 72px !important;
+      height: 72px !important;
+    }
+    .kop-title {
+      font-size: 15pt !important;
+      line-height: 1.2 !important;
+    }
+    .kop-subtitle {
+      font-size: 10.5pt !important;
+    }
+    .kop-legal {
+      font-size: 8.5pt !important;
+    }
+    .kop-address, .kop-contact {
+      font-size: 8pt !important;
+    }
+  }
+
+  /* F4 / Folio / Legal Tall Paper (215mm x 330mm) */
+  @media print and (min-height: 298mm) {
+    @page {
+      size: 215mm 330mm;
+      margin: 12mm 15mm 12mm 15mm;
+    }
+    .kop-surat-container {
+      padding-bottom: 14px !important;
+      margin-bottom: 6px !important;
+      gap: 20px !important;
+    }
+    .kop-logo {
+      width: 84px !important;
+      height: 84px !important;
+    }
+    .kop-title {
+      font-size: 17.5pt !important;
+      line-height: 1.25 !important;
+    }
+    .kop-subtitle {
+      font-size: 12pt !important;
+    }
+    .kop-legal {
+      font-size: 9.5pt !important;
+    }
+    .kop-address, .kop-contact {
+      font-size: 8.8pt !important;
+    }
+    .kop-divider {
+      margin-bottom: 22px !important;
+    }
+  }
+
+  /* Letter Compact Paper (216mm x 279mm) */
+  @media print and (max-height: 282mm) {
+    @page {
+      size: letter portrait;
+      margin: 8mm 12mm 8mm 12mm;
+    }
+    .kop-surat-container {
+      padding-bottom: 8px !important;
+      margin-bottom: 3px !important;
+      gap: 12px !important;
+    }
+    .kop-logo {
+      width: 64px !important;
+      height: 64px !important;
+    }
+    .kop-title {
+      font-size: 13.5pt !important;
+      line-height: 1.15 !important;
+    }
+    .kop-subtitle {
+      font-size: 9.5pt !important;
+    }
+    .kop-legal {
+      font-size: 8pt !important;
+    }
+    .kop-address, .kop-contact {
+      font-size: 7.5pt !important;
+    }
+    .kop-divider {
+      margin-bottom: 12px !important;
+    }
+  }
 }
 

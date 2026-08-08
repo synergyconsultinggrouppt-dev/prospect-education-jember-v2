@@ -36,6 +36,7 @@ import {
 import { UserRole, Candidate } from '../../types';
 import { useApp } from '../../context/AppContext';
 import { WebmasterDashboard } from '../webmaster/WebmasterDashboard';
+import { SystemHealthWidget } from './SystemHealthWidget';
 
 export interface ManagedUser {
   id: string;
@@ -74,7 +75,7 @@ export const SuperAdminPanel: React.FC = () => {
   const { candidates = [], registerCandidate, currentRole } = useApp();
 
   // Primary active tab inside SuperAdminPanel
-  const [subTab, setSubTab] = useState<'users' | 'settings' | 'approvals' | 'webmaster' | 'audit_logs'>('users');
+  const [subTab, setSubTab] = useState<'system_health' | 'users' | 'settings' | 'approvals' | 'webmaster' | 'audit_logs'>('system_health');
 
   // --- 1. USER MANAGEMENT STATE ---
   const [userRoleFilter, setUserRoleFilter] = useState<string>('all');
@@ -468,6 +469,18 @@ export const SuperAdminPanel: React.FC = () => {
       {/* Navigation Sub-Tabs */}
       <div className="flex flex-wrap items-center gap-2 bg-white p-2 rounded-2xl border border-slate-200 shadow-xs">
         <button
+          onClick={() => setSubTab('system_health')}
+          className={`px-4 py-2.5 rounded-xl text-xs font-bold transition flex items-center gap-2 ${
+            subTab === 'system_health'
+              ? 'bg-slate-950 text-emerald-400 border border-emerald-500/40 shadow-sm font-black'
+              : 'text-slate-700 bg-slate-50 hover:bg-slate-100'
+          }`}
+        >
+          <Activity className="w-4 h-4 text-emerald-500" />
+          <span>System Health & Monitoring</span>
+        </button>
+
+        <button
           onClick={() => setSubTab('users')}
           className={`px-4 py-2.5 rounded-xl text-xs font-bold transition flex items-center gap-2 ${
             subTab === 'users'
@@ -532,6 +545,9 @@ export const SuperAdminPanel: React.FC = () => {
           <span>Audit Log Keamanan</span>
         </button>
       </div>
+
+      {/* --- SUBTAB 0: SYSTEM HEALTH WIDGET & MONITORING --- */}
+      {subTab === 'system_health' && <SystemHealthWidget />}
 
       {/* --- SUBTAB 1: USER MANAGEMENT (CRUD) --- */}
       {subTab === 'users' && (

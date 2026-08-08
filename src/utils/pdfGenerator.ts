@@ -352,7 +352,7 @@ export const downloadLoaPDF = async (candidate: Candidate): Promise<void> => {
   doc.setFont('helvetica', 'bold');
   doc.setFontSize(6.5);
   doc.setTextColor(255, 255, 255);
-  doc.text(`VERIFIKASI KEASLIAN DOKUMEN VIA QR CODE / LINK: ${verificationUrl}`, margin + 4, footerY + 54.5);
+  doc.text('VERIFIKASI KEASLIAN DOKUMEN TERINTEGRASI VIA QR CODE - PROSPECT EDUCATION JEMBER', margin + 4, footerY + 54.5);
 
   // File download trigger
   const safeName = candidate.fullName.toLowerCase().replace(/[^a-z0-9]/g, '_');

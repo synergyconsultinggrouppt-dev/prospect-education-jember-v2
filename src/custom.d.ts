@@ -12,3 +12,10 @@ declare module '*.svg' {
   const value: string;
   export default value;
 }
+
+interface Window {
+  AndroidInterface?: any;
+  AndroidBridge?: any;
+  LkpAndroidBridge?: any;
+  LkpWebBridge?: any;
+}

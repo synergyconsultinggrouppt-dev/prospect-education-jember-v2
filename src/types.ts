@@ -507,3 +507,13 @@ export interface IssuedLetter {
   verificationUrl?: string;
 }
 
+export type {
+  AndroidBridgeConfig,
+  CameraPermissionStatus,
+  NativeCameraOptions,
+  NativeCameraResult,
+  OAuthRedirectPayload,
+  NativeDeviceInfo,
+  AndroidNativeInterface,
+} from './utils/androidBridge';
+

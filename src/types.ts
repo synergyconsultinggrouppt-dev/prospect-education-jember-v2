@@ -183,18 +183,47 @@ export interface QuizQuestion {
   explanation: string;
 }
 
+export interface LMSDialogLine {
+  speaker: string;
+  text: string;
+  reading: string;
+  translation: string;
+}
+
+export interface LMSVocabulary {
+  term: string;
+  reading: string;
+  meaning: string;
+  exampleSentence?: string;
+}
+
+export interface LMSGrammarPoint {
+  pattern: string;
+  meaning: string;
+  explanation: string;
+  example: string;
+}
+
 export interface LMSModule {
   id: string;
   programType: ProgramType | 'all';
   title: string;
   description: string;
-  contentType: 'video' | 'pdf' | 'quiz';
+  contentType: 'video' | 'pdf' | 'quiz' | 'audio' | 'interactive';
+  language?: 'Mandarin' | 'Jepang' | 'Inggris';
+  monthLevel?: 1 | 2 | 3;
+  weekLabel?: string;
   videoEmbedUrl?: string;
   pdfDownloadUrl?: string;
+  audioUrl?: string;
   durationMinutes: number;
   timeSpentMinutes?: number;
   progressPercent?: number;
   quizQuestions?: QuizQuestion[];
+  audioTranscript?: LMSDialogLine[];
+  vocabularyList?: LMSVocabulary[];
+  keyGrammarPoints?: LMSGrammarPoint[];
+  practicalTips?: string[];
   isCompleted?: boolean;
 }
 

@@ -8,6 +8,7 @@ import {
   StudyResource,
   AttendanceRecord,
 } from '../types';
+import { COMPREHENSIVE_LMS_MODULES } from './lmsCurriculumData';
 import departure1 from '../assets/images/taiwan_ifp_departure_1_1784770304337.jpg';
 
 export const INITIAL_PROGRAMS: ProgramInfo[] = [
@@ -410,120 +411,7 @@ export const INITIAL_CANDIDATES: Candidate[] = [
   }
 ];
 
-export const INITIAL_LMS_MODULES: LMSModule[] = [
-  {
-    id: 'lms-1',
-    programType: 'taiwan_ifp',
-    title: 'Pembekalan Bahasa Mandarin Basic (Bopomofo & Pinyin)',
-    description: 'Modul dasar pengenalan nada (tones), ejaan Bopomofo/Pinyin, dan kosakata harian untuk siswa pendaftar Taiwan IFP 1+4 di Prospect Education Jember.',
-    contentType: 'video',
-    videoEmbedUrl: 'https://www.youtube.com/embed/dQw4w9WgXcQ',
-    durationMinutes: 45,
-    timeSpentMinutes: 45,
-    progressPercent: 100,
-    isCompleted: true
-  },
-  {
-    id: 'lms-2',
-    programType: 'taiwan_ifp',
-    title: 'Pembekalan Bahasa Inggris Basic & Komunikasi Kampus',
-    description: 'Panduan percakapan dasar Bahasa Inggris untuk adaptasi awal orientasi kampus dan komunikasi sehari-hari di Taiwan.',
-    contentType: 'pdf',
-    pdfDownloadUrl: '#',
-    durationMinutes: 30,
-    timeSpentMinutes: 30,
-    progressPercent: 100,
-    isCompleted: true
-  },
-  {
-    id: 'lms-3',
-    programType: 'japan_im',
-    title: 'Bahasa Jepang N5: Percakapan & Hiragana Katakana',
-    description: 'Materi intensif menghafal karakter Hiragana, Katakana, dan tata bahasa dasar N5 untuk kerja magang.',
-    contentType: 'video',
-    videoEmbedUrl: 'https://www.youtube.com/embed/dQw4w9WgXcQ',
-    durationMinutes: 60,
-    timeSpentMinutes: 60,
-    progressPercent: 100,
-    isCompleted: true
-  },
-  {
-    id: 'lms-4',
-    programType: 'japan_ssw',
-    title: 'Tryout Online Ujian Keahlian Tokutei Ginou (SSW)',
-    description: 'Ujian simulasi dengan soal bertipe standar industri Jepang untuk menguji kesiapan peserta.',
-    contentType: 'quiz',
-    durationMinutes: 30,
-    timeSpentMinutes: 15,
-    progressPercent: 50,
-    quizQuestions: [
-      {
-        id: 'q1',
-        question: 'Dalam etika kerja Jepang (Aisatsu), salam yang diucapkan saat tiba di tempat kerja adalah:',
-        options: ['Otsukaresama desu', 'Ohayou gozaimasu', 'Shitsurei shimasu', 'Osaki ni shitsurei shimasu'],
-        correctAnswerIndex: 1,
-        explanation: 'Ohayou gozaimasu diucapkan saat pertama kali bertemu atau memulai kerja di pagi hari.'
-      },
-      {
-        id: 'q2',
-        question: 'Konsep 5S dalam keselamatan kerja di Jepang terdiri dari:',
-        options: [
-          'Seiri, Seiton, Seiso, Seiketsu, Shitsuke',
-          'Salam, Senyum, Sapa, Sopan, Santun',
-          'Safety, Saving, Speed, Skill, Service',
-          'Seiri, Seiketsu, Shitsuke, Speed, Smart'
-        ],
-        correctAnswerIndex: 0,
-        explanation: '5S adalah metodologi penataan tempat kerja Jepang: Seiri (Ringkas), Seiton (Rapi), Seiso (Resik), Seiketsu (Rawat), Shitsuke (Rajin).'
-      }
-    ],
-    isCompleted: false
-  },
-  {
-    id: 'lms-5',
-    programType: 'taiwan_ifp',
-    title: 'Pengenalan Budaya, Orientasi Kehidupan Taiwan & Evaluasi Prospect',
-    description: 'Materi pengenalan budaya, norma masyarakat Taiwan, serta evaluasi akhir untuk penerbitan Sertifikat Bahasa & Pembekalan Resmi Prospect Education (tanpa syarat sertifikat TOCFL). Bahasa Mandarin akademik akan dipelajari selama 1 tahun pertama di Taiwan.',
-    contentType: 'quiz',
-    durationMinutes: 40,
-    timeSpentMinutes: 0,
-    progressPercent: 0,
-    quizQuestions: [
-      {
-        id: 'tw1',
-        question: 'Penggunaan salam "Nǐ hǎo" (你好) dalam kehidupan sehari-hari di Taiwan digunakan saat:',
-        options: ['Mengucapkan salam sapaan umum (Halo/Apa kabar)', 'Mengucapkan selamat tinggal', 'Meminta maaf kepada dosen', 'Mengucapkan terima kasih'],
-        correctAnswerIndex: 0,
-        explanation: 'Nǐ hǎo adalah sapaan umum "Halo/Apa kabar" dalam bahasa Mandarin.'
-      },
-      {
-        id: 'tw2',
-        question: 'Bagaimanakah ketentuan sertifikat bahasa untuk pendaftar Program Taiwan IFP 1+4 di Prospect Education Jember?',
-        options: [
-          'Tidak diwajibkan sertifikat TOCFL, peserta dibekali Mandarin & Inggris Basic serta Budaya Taiwan lalu mendapatkan Sertifikat Bahasa dari Prospect Education',
-          'Wajib memiliki sertifikat TOCFL B2 sebelum mendaftar',
-          'Wajib memiliki sertifikat TOEFL PBT 550',
-          'Sama sekali tidak mendapat sertifikat apapun'
-        ],
-        correctAnswerIndex: 0,
-        explanation: 'Peserta IFP 1+4 tidak diwajibkan memiliki sertifikat TOCFL. Peserta dibekali Mandarin Basic, Inggris Basic, dan Budaya Taiwan di Prospect Education Jember, lalu diterbitkan Sertifikat Bahasa resmi dari Prospect Education. Penguatan Mandarin lanjutan dilakukan saat 1 tahun pertama di Taiwan.'
-      }
-    ],
-    isCompleted: false
-  },
-  {
-    id: 'lms-6',
-    programType: 'japan_im',
-    title: 'Buku Panduan Budaya Kerja, K3 & Kaizen 5S Jepang',
-    description: 'Modul digital mengenai etika kerja profesional, tata tertib pemagangan IM Japan, dan prinsip 5S di tempat kerja.',
-    contentType: 'pdf',
-    pdfDownloadUrl: '#',
-    durationMinutes: 35,
-    timeSpentMinutes: 35,
-    progressPercent: 100,
-    isCompleted: true
-  }
-];
+export const INITIAL_LMS_MODULES: LMSModule[] = COMPREHENSIVE_LMS_MODULES;
 
 export const INITIAL_FINANCIAL_RECORDS: FinancialRecord[] = [
   {

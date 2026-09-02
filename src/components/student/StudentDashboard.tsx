@@ -189,13 +189,13 @@ export const StudentDashboard: React.FC = () => {
 
   return (
     <div className="max-w-7xl mx-auto px-4 py-8 space-y-8 bg-slate-50/50">
-      {/* Welcome Banner */}
-      <div className="bg-gradient-to-r from-[#0F3D7A] via-sky-900 to-slate-900 text-white p-6 sm:p-8 rounded-3xl border border-sky-300/30 shadow-md flex flex-col md:flex-row items-center justify-between gap-6">
-        <div className="flex flex-col sm:flex-row items-center sm:items-start gap-5 text-center sm:text-left">
-          {/* Avatar Thumbnail with Edit Overlay */}
+      {/* Welcome Header Banner - Clean Institutional Design */}
+      <div className="bg-[#0C2340] text-white p-5 sm:p-7 rounded-3xl border border-slate-800 shadow-md flex flex-col md:flex-row items-center justify-between gap-5">
+        <div className="flex flex-col sm:flex-row items-center sm:items-start gap-4 text-center sm:text-left">
+          {/* Avatar Thumbnail */}
           <button
             onClick={() => setIsProfileModalOpen(true)}
-            className="relative w-16 h-16 sm:w-20 sm:h-20 rounded-2xl bg-sky-500/20 border-2 border-sky-300/50 shadow-md overflow-hidden shrink-0 group transition hover:scale-105 cursor-pointer"
+            className="relative w-14 h-14 sm:w-16 sm:h-16 rounded-2xl bg-slate-800 border-2 border-slate-700 shadow-sm overflow-hidden shrink-0 group transition hover:border-amber-400 cursor-pointer"
             title="Klik untuk ubah foto profil & data kontak"
           >
             {currentCandidate.avatarUrl ? (
@@ -205,85 +205,68 @@ export const StudentDashboard: React.FC = () => {
                 className="w-full h-full object-cover"
               />
             ) : (
-              <div className="w-full h-full flex items-center justify-center bg-slate-900 text-sky-300 font-bold text-xl font-serif">
+              <div className="w-full h-full flex items-center justify-center bg-slate-900 text-amber-300 font-bold text-lg font-serif">
                 {currentCandidate.fullName.charAt(0)}
               </div>
             )}
-            <div className="absolute inset-0 bg-slate-950/60 opacity-0 group-hover:opacity-100 transition flex items-center justify-center text-sky-300">
-              <Settings className="w-6 h-6 animate-spin-slow" />
+            <div className="absolute inset-0 bg-slate-950/70 opacity-0 group-hover:opacity-100 transition flex items-center justify-center text-amber-300">
+              <Settings className="w-5 h-5" />
             </div>
           </button>
 
-          <div className="space-y-2">
-            <div className="inline-flex items-center gap-2 bg-sky-950/80 border border-sky-400/30 text-sky-300 px-3 py-1 rounded-full text-xs font-bold">
-              <ShieldCheck className="w-3.5 h-3.5 text-emerald-400" />
-              <span>PORTAL PESERTA CABANG JEMBER</span>
+          <div className="space-y-1.5">
+            <div className="flex items-center gap-2 justify-center sm:justify-start flex-wrap">
+              <span className="text-[10px] font-bold uppercase tracking-wider bg-blue-950 text-blue-300 px-2.5 py-0.5 rounded-md border border-blue-800/80">
+                Portal Peserta Jember
+              </span>
+              <span className="text-[10px] font-semibold bg-slate-800 text-slate-300 px-2 py-0.5 rounded-md">
+                {isTaiwanCandidate ? 'Program Kuliah Taiwan' : 'Program Kerja Jepang'}
+              </span>
             </div>
-            <h1 className="text-2xl sm:text-3xl font-black font-serif text-white">
-              Selamat Datang, {currentCandidate.fullName}!
+            <h1 className="text-xl sm:text-2xl font-bold font-serif text-white">
+              {currentCandidate.fullName}
             </h1>
-            <p className="text-xs text-slate-200 max-w-xl">
-              Nomor Registrasi: <span className="font-mono text-sky-200 font-bold">{currentCandidate.registrationNumber}</span> • Program Pilihan:{' '}
-              <span className="font-bold uppercase text-white">{currentCandidate.selectedProgram?.replace('_', ' ')}</span>
+            <p className="text-xs text-slate-300">
+              ID Registrasi: <span className="font-mono text-amber-300 font-bold">{currentCandidate.registrationNumber}</span>
+              <span className="mx-2 text-slate-600">•</span>
+              Status: <span className="font-medium text-emerald-400">{SystemAlerts.getStatusLabel(currentCandidate.status, 'id')}</span>
             </p>
           </div>
         </div>
 
-        {/* Quick Actions / Buttons */}
-        <div className="flex flex-wrap items-center justify-center sm:justify-start md:justify-end gap-2.5 w-full md:w-auto">
+        {/* Concise Action Buttons */}
+        <div className="flex flex-wrap items-center justify-center md:justify-end gap-2 w-full md:w-auto">
           <button
             onClick={() => setIsProfileModalOpen(true)}
-            className="bg-sky-500/20 hover:bg-sky-500/30 text-sky-200 border border-sky-400/30 font-bold text-xs px-3.5 py-2.5 rounded-xl shadow-xs transition flex items-center justify-center gap-2 shrink-0 cursor-pointer"
-            title="Ubah profil, foto, dan kata sandi"
+            className="bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 font-medium text-xs px-3.5 py-2 rounded-xl transition flex items-center gap-1.5 cursor-pointer"
           >
-            <Settings className="w-4 h-4 text-sky-300" />
-            <span>Pengaturan Profil</span>
+            <Settings className="w-3.5 h-3.5 text-slate-400" />
+            <span>Profil</span>
           </button>
 
           <button
             onClick={() => downloadStudentProfilePDF(currentCandidate, candidateLmsModules)}
-            className="bg-amber-500 hover:bg-amber-400 text-slate-950 font-black text-xs px-3.5 py-2.5 rounded-xl shadow-md transition flex items-center justify-center gap-2 shrink-0 cursor-pointer border border-amber-300"
-            title="Unduh PDF Resmi Profil & Progres Pendaftaran Peserta (jsPDF)"
+            className="bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 font-medium text-xs px-3.5 py-2 rounded-xl transition flex items-center gap-1.5 cursor-pointer"
           >
-            <Download className="w-4 h-4 text-slate-950" />
-            <span>Unduh PDF Profil</span>
-          </button>
-
-          {currentCandidate.loaIssued && (
-            <button
-              onClick={() => downloadLoaPDF(currentCandidate)}
-              className="bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs px-3.5 py-2.5 rounded-xl shadow-md transition flex items-center justify-center gap-2 shrink-0 cursor-pointer"
-              title="Unduh Dokumen Surat Penerimaan LoA Resmi PDF (jsPDF)"
-            >
-              <Download className="w-4 h-4 text-emerald-200" />
-              <span>Unduh LoA PDF</span>
-            </button>
-          )}
-
-          <button
-            onClick={() => setIsPrintModalOpen(true)}
-            className="bg-white/10 hover:bg-white/20 text-sky-100 border border-white/20 font-bold text-xs px-3.5 py-2.5 rounded-xl shadow-xs transition flex items-center justify-center gap-2 shrink-0 cursor-pointer"
-            title="Cetak ringkasan pendaftaran & checklist berkas fisik"
-          >
-            <Printer className="w-4 h-4 text-amber-300" />
-            <span>Cetak Ringkasan</span>
+            <Download className="w-3.5 h-3.5 text-amber-400" />
+            <span>Unduh PDF</span>
           </button>
 
           {currentCandidate.loaIssued ? (
             <button
               onClick={() => setActiveTab('loa')}
-              className="bg-[#0F3D7A] hover:bg-[#1E40AF] text-white font-bold text-xs px-4 py-2.5 rounded-xl shadow-xs transition flex items-center justify-center gap-2 shrink-0 border border-sky-400/30 cursor-pointer"
+              className="bg-amber-400 hover:bg-amber-300 text-slate-950 font-bold text-xs px-4 py-2 rounded-xl transition flex items-center gap-1.5 shadow-sm cursor-pointer"
             >
-              <FileCheck className="w-4 h-4 text-amber-300" />
-              <span>Surat Penerimaan (LoA)</span>
+              <FileCheck className="w-4 h-4 text-slate-950" />
+              <span>Surat LoA</span>
             </button>
           ) : (
             <button
               onClick={() => setIsPaymentModalOpen(true)}
-              className="bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs px-4 py-2.5 rounded-xl shadow-xs transition flex items-center justify-center gap-2 shrink-0 cursor-pointer"
+              className="bg-amber-400 hover:bg-amber-300 text-slate-950 font-bold text-xs px-4 py-2 rounded-xl transition flex items-center gap-1.5 shadow-sm cursor-pointer"
             >
-              <CreditCard className="w-4 h-4" />
-              <span>Bayar DP Pendaftaran</span>
+              <CreditCard className="w-4 h-4 text-slate-950" />
+              <span>Bayar DP</span>
             </button>
           )}
         </div>
@@ -297,32 +280,67 @@ export const StudentDashboard: React.FC = () => {
       />
 
       {/* Structured Category & Sub-Menu Navigation Bar */}
-      <div className="bg-white p-4 rounded-3xl border border-slate-200 shadow-xs space-y-4">
-        {/* Mobile Dropdown Category Navigation */}
-        <div className="md:hidden w-full space-y-2">
-          <label className="block text-xs font-bold text-blue-900 flex items-center justify-between">
-            <span>📍 Menu Portal Peserta Terstruktur:</span>
-            <span className="text-[10px] text-slate-500 font-normal">Pilih modul di bawah</span>
-          </label>
-          <select
-            value={activeTab}
-            onChange={(e) => setActiveTab(e.target.value as any)}
-            className="w-full bg-slate-50 text-blue-900 font-bold text-xs p-3 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-sky-500 cursor-pointer"
-          >
-            {menuCategories.map((category) => (
-              <optgroup key={category.id} label={`--- ${category.title} ---`}>
-                {category.tabs.map((tab) => (
-                  <option key={tab.id} value={tab.id}>
-                    {tab.label}
-                  </option>
-                ))}
-              </optgroup>
-            ))}
-          </select>
+      <div className="bg-white p-4 sm:p-5 rounded-3xl border border-slate-200 shadow-sm space-y-3.5">
+        {/* Mobile & Tablet Category Swipeable Pills */}
+        <div className="md:hidden space-y-2.5">
+          <div className="flex items-center justify-between">
+            <span className="text-xs font-bold text-slate-800 flex items-center gap-1.5">
+              <span>Kategori Menu:</span>
+            </span>
+            <span className="text-[10px] font-semibold text-slate-500 bg-slate-100 px-2 py-0.5 rounded-md">
+              {activeCategory.tabs.length} Fitur Tersedia
+            </span>
+          </div>
+
+          {/* Category Pills Slider */}
+          <div className="flex gap-1.5 overflow-x-auto pb-1.5 scrollbar-thin scrollbar-thumb-slate-300">
+            {menuCategories.map((category) => {
+              const Icon = category.icon;
+              const isCategoryActive = category.id === activeCategory.id;
+
+              return (
+                <button
+                  key={category.id}
+                  onClick={() => setActiveTab(category.tabs[0].id as any)}
+                  className={`px-3 py-2 rounded-xl text-xs font-bold transition flex items-center gap-1.5 shrink-0 cursor-pointer ${
+                    isCategoryActive
+                      ? 'bg-[#0F3D7A] text-white shadow-xs'
+                      : 'bg-slate-100 text-slate-700 hover:bg-slate-200'
+                  }`}
+                >
+                  <Icon className="w-3.5 h-3.5 shrink-0" />
+                  <span className="whitespace-nowrap">{category.title}</span>
+                </button>
+              );
+            })}
+          </div>
+
+          {/* Sub-menu Grid for Mobile */}
+          <div className="grid grid-cols-2 gap-1.5 pt-1.5 border-t border-slate-100">
+            {activeCategory.tabs.map((tab) => {
+              const TabIcon = tab.icon;
+              const isTabActive = activeTab === tab.id;
+
+              return (
+                <button
+                  key={tab.id}
+                  onClick={() => setActiveTab(tab.id as any)}
+                  className={`p-2.5 rounded-xl font-bold text-xs transition flex items-center gap-2 text-left cursor-pointer border ${
+                    isTabActive
+                      ? 'bg-sky-600 text-white border-sky-700 shadow-xs'
+                      : 'bg-slate-50 text-slate-700 hover:bg-slate-100 border-slate-200/80'
+                  }`}
+                >
+                  <TabIcon className={`w-3.5 h-3.5 shrink-0 ${isTabActive ? 'text-white' : 'text-[#0F3D7A]'}`} />
+                  <span className="truncate">{tab.label}</span>
+                </button>
+              );
+            })}
+          </div>
         </div>
 
-        {/* Desktop 5 Main Category Cards / Tabs */}
-        <div className="hidden md:grid grid-cols-5 gap-2.5">
+        {/* Desktop 5 Main Category Tabs - Clean Segmented Navigation */}
+        <div className="hidden md:grid grid-cols-5 gap-2">
           {menuCategories.map((category) => {
             const Icon = category.icon;
             const isCategoryActive = category.id === activeCategory.id;
@@ -331,40 +349,29 @@ export const StudentDashboard: React.FC = () => {
               <button
                 key={category.id}
                 onClick={() => setActiveTab(category.tabs[0].id as any)}
-                className={`p-3 rounded-2xl border transition text-left flex flex-col justify-between gap-2 cursor-pointer ${
+                className={`p-3 rounded-2xl border text-left transition flex items-center gap-3 cursor-pointer ${
                   isCategoryActive
-                    ? 'bg-[#0F3D7A] text-white border-blue-900 shadow-xs'
-                    : 'bg-slate-50 text-slate-800 border-slate-200 hover:bg-sky-50/60 hover:border-sky-200'
+                    ? 'bg-[#0F3D7A] text-white border-[#0F3D7A] shadow-xs'
+                    : 'bg-slate-50 text-slate-700 border-slate-200/80 hover:bg-slate-100 hover:text-slate-900'
                 }`}
               >
-                <div className="flex items-center justify-between w-full">
-                  <div
-                    className={`p-2 rounded-xl ${
-                      isCategoryActive
-                        ? 'bg-sky-500/20 text-sky-200'
-                        : 'bg-white text-blue-900 shadow-2xs'
-                    }`}
-                  >
-                    <Icon className="w-4 h-4" />
-                  </div>
-                  <span
-                    className={`text-[9px] font-bold px-2 py-0.5 rounded-full ${
-                      isCategoryActive
-                        ? 'bg-sky-400/20 text-sky-200 border border-sky-300/30'
-                        : 'bg-slate-200 text-slate-700'
-                    }`}
-                  >
-                    {category.badge}
-                  </span>
+                <div
+                  className={`p-2 rounded-xl shrink-0 ${
+                    isCategoryActive
+                      ? 'bg-white/20 text-amber-300'
+                      : 'bg-white text-[#0F3D7A] shadow-2xs'
+                  }`}
+                >
+                  <Icon className="w-4 h-4" />
                 </div>
-                <div>
-                  <h4 className="font-bold text-xs leading-tight">{category.title}</h4>
+                <div className="min-w-0">
+                  <h4 className="font-bold text-xs leading-tight truncate">{category.title}</h4>
                   <p
                     className={`text-[10px] mt-0.5 ${
-                      isCategoryActive ? 'text-sky-200' : 'text-slate-500'
+                      isCategoryActive ? 'text-slate-200' : 'text-slate-500'
                     }`}
                   >
-                    {category.tabs.length} Menu Fitur
+                    {category.tabs.length} Menu
                   </p>
                 </div>
               </button>
@@ -372,10 +379,10 @@ export const StudentDashboard: React.FC = () => {
           })}
         </div>
 
-        {/* Active Category Sub-Menu Pills */}
+        {/* Active Category Sub-Menu Pills (Desktop) */}
         <div className="hidden md:flex flex-wrap items-center gap-2 pt-2 border-t border-slate-100">
-          <span className="text-[11px] font-bold text-slate-500 flex items-center gap-1.5 mr-2">
-            <span>Sub-Menu [{activeCategory.title}]:</span>
+          <span className="text-[11px] font-semibold text-slate-500 mr-1">
+            Menu [{activeCategory.title}]:
           </span>
           {activeCategory.tabs.map((tab) => {
             const TabIcon = tab.icon;
@@ -385,13 +392,13 @@ export const StudentDashboard: React.FC = () => {
               <button
                 key={tab.id}
                 onClick={() => setActiveTab(tab.id as any)}
-                className={`px-3.5 py-2 rounded-xl font-bold text-xs transition flex items-center gap-1.5 cursor-pointer ${
+                className={`px-3 py-1.5 rounded-xl font-bold text-xs transition flex items-center gap-1.5 cursor-pointer ${
                   isTabActive
-                    ? 'bg-sky-600 text-white shadow-xs border border-sky-700'
-                    : 'bg-slate-100 text-slate-700 hover:bg-slate-200 border border-slate-200'
+                    ? 'bg-[#0F3D7A] text-white shadow-xs'
+                    : 'bg-slate-100 text-slate-600 hover:bg-slate-200 border border-slate-200'
                 }`}
               >
-                <TabIcon className={`w-3.5 h-3.5 ${isTabActive ? 'text-white' : 'text-blue-900'}`} />
+                <TabIcon className={`w-3.5 h-3.5 ${isTabActive ? 'text-amber-300' : 'text-slate-500'}`} />
                 <span>{tab.label}</span>
               </button>
             );
@@ -401,16 +408,16 @@ export const StudentDashboard: React.FC = () => {
 
       {/* Tab Content Views */}
       {activeTab === 'overview' && (
-        <div className="space-y-8">
-          {/* System Alerts Automated Status Notification Banner */}
-          <div className="bg-slate-900 text-white p-5 rounded-3xl border border-slate-800 shadow-lg flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+        <div className="space-y-6">
+          {/* Status Alert Summary */}
+          <div className="bg-white p-4 rounded-2xl border border-slate-200 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 shadow-2xs">
             <div className="flex items-center gap-3">
-              <div className="p-2.5 bg-red-600/30 text-red-400 rounded-2xl shrink-0">
-                <CheckCircle2 className="w-5 h-5" />
+              <div className="w-9 h-9 rounded-xl bg-blue-50 text-[#0F3D7A] flex items-center justify-center shrink-0 border border-blue-100">
+                <CheckCircle2 className="w-5 h-5 text-emerald-600" />
               </div>
-              <div className="space-y-0.5">
+              <div>
                 <div className="flex items-center gap-2 flex-wrap">
-                  <span className="text-xs font-bold text-amber-400">SystemAlerts Status Update:</span>
+                  <span className="text-xs font-bold text-slate-900">Status Pendaftaran Terkini:</span>
                   <span
                     className={`text-[10px] font-bold px-2.5 py-0.5 rounded-full border ${
                       SystemAlerts.getStatusBadgeStyle(currentCandidate.status).bg
@@ -421,89 +428,95 @@ export const StudentDashboard: React.FC = () => {
                     {SystemAlerts.getStatusLabel(currentCandidate.status, 'id')}
                   </span>
                 </div>
-                <p className="text-xs text-slate-300">
-                  Pemberitahuan & lonceng notifikasi dashboard Anda tersinkronisasi otomatis dengan pembaruan status sistem.
+                <p className="text-[11px] text-slate-500">
+                  Data Anda tersinkronisasi langsung dengan sistem verifikasi Admin Prospect Education Cabang Jember.
                 </p>
               </div>
             </div>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
             {/* Card 1: Biodata Status */}
-            <div className="bg-white p-6 rounded-3xl border border-slate-200 shadow-xs space-y-4">
-              <div className="flex items-center justify-between">
-                <span className="p-3 bg-red-50 text-red-700 rounded-2xl">
-                  <UserCheck className="w-6 h-6" />
-                </span>
-                <span className="text-[10px] font-bold bg-slate-100 text-slate-700 px-2.5 py-1 rounded-full">
-                  {currentCandidate.biodata ? 'Lengkap' : 'Belum Lengkap'}
-                </span>
-              </div>
-              <div>
-                <h3 className="font-bold text-slate-900 text-base">Biodata Peserta</h3>
-                <p className="text-xs text-slate-500 mt-1">
-                  {currentCandidate.biodata
-                    ? `NIK: ${currentCandidate.biodata.nik} • ${currentCandidate.biodata.address}`
-                    : 'Harap lengkapi formulir biodata pribadi Anda.'}
-                </p>
+            <div className="bg-white p-5 rounded-2xl border border-slate-200 shadow-2xs space-y-3 flex flex-col justify-between">
+              <div className="space-y-2">
+                <div className="flex items-center justify-between">
+                  <span className="p-2 bg-blue-50 text-[#0F3D7A] rounded-xl border border-blue-100">
+                    <UserCheck className="w-5 h-5" />
+                  </span>
+                  <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full ${currentCandidate.biodata ? 'bg-emerald-50 text-emerald-700 border border-emerald-200' : 'bg-slate-100 text-slate-600'}`}>
+                    {currentCandidate.biodata ? 'Lengkap' : 'Belum Lengkap'}
+                  </span>
+                </div>
+                <div>
+                  <h3 className="font-bold text-slate-900 text-sm">Biodata Peserta</h3>
+                  <p className="text-xs text-slate-500 mt-0.5 line-clamp-2">
+                    {currentCandidate.biodata
+                      ? `NIK: ${currentCandidate.biodata.nik}`
+                      : 'Lengkapi formulir biodata pribadi Anda.'}
+                  </p>
+                </div>
               </div>
               <button
                 onClick={() => setActiveTab('biodata')}
-                className="w-full text-center bg-slate-900 hover:bg-slate-800 text-white font-bold py-2.5 rounded-xl transition text-xs"
+                className="w-full text-center bg-slate-900 hover:bg-slate-800 text-white font-bold py-2 rounded-xl transition text-xs cursor-pointer"
               >
-                {currentCandidate.biodata ? 'Edit Biodata' : 'Isi Biodata Sekarang'}
+                {currentCandidate.biodata ? 'Ubah Biodata' : 'Isi Biodata'}
               </button>
             </div>
 
             {/* Card 2: Documents Status */}
-            <div className="bg-white p-6 rounded-3xl border border-slate-200 shadow-xs space-y-4">
-              <div className="flex items-center justify-between">
-                <span className="p-3 bg-amber-50 text-amber-700 rounded-2xl">
-                  <Upload className="w-6 h-6" />
-                </span>
-                <span className="text-[10px] font-bold bg-amber-100 text-amber-900 px-2.5 py-1 rounded-full">
-                  {currentCandidate.documents.length} File Diunggah
-                </span>
-              </div>
-              <div>
-                <h3 className="font-bold text-slate-900 text-base">Dokumen Persyaratan</h3>
-                <p className="text-xs text-slate-500 mt-1">
-                  {currentCandidate.documents.length > 0
-                    ? 'Dokumen Anda sedang diproses dan diverifikasi oleh tim Admin.'
-                    : 'Unggah scan KTP, Ijazah, Pasfoto, & KK.'}
-                </p>
+            <div className="bg-white p-5 rounded-2xl border border-slate-200 shadow-2xs space-y-3 flex flex-col justify-between">
+              <div className="space-y-2">
+                <div className="flex items-center justify-between">
+                  <span className="p-2 bg-amber-50 text-amber-800 rounded-xl border border-amber-100">
+                    <Upload className="w-5 h-5" />
+                  </span>
+                  <span className="text-[10px] font-bold bg-amber-50 text-amber-900 border border-amber-200 px-2 py-0.5 rounded-full">
+                    {currentCandidate.documents.length} Berkas
+                  </span>
+                </div>
+                <div>
+                  <h3 className="font-bold text-slate-900 text-sm">Dokumen & Berkas</h3>
+                  <p className="text-xs text-slate-500 mt-0.5 line-clamp-2">
+                    {currentCandidate.documents.length > 0
+                      ? 'Dokumen tersimpan dan terverifikasi.'
+                      : 'Unggah KTP, Ijazah, Pasfoto, & KK.'}
+                  </p>
+                </div>
               </div>
               <button
                 onClick={() => setActiveTab('documents')}
-                className="w-full text-center bg-slate-900 hover:bg-slate-800 text-white font-bold py-2.5 rounded-xl transition text-xs"
+                className="w-full text-center bg-slate-900 hover:bg-slate-800 text-white font-bold py-2 rounded-xl transition text-xs cursor-pointer"
               >
                 Kelola Dokumen
               </button>
             </div>
 
             {/* Card 3: Payment Status */}
-            <div className="bg-white p-6 rounded-3xl border border-slate-200 shadow-xs space-y-4">
-              <div className="flex items-center justify-between">
-                <span className="p-3 bg-emerald-50 text-emerald-700 rounded-2xl">
-                  <CreditCard className="w-6 h-6" />
-                </span>
-                <span
-                  className={`text-[10px] font-bold px-2.5 py-1 rounded-full ${
-                    currentCandidate.paymentStatus === 'lunas'
-                      ? 'bg-emerald-100 text-emerald-800'
-                      : 'bg-amber-100 text-amber-900'
-                  }`}
-                >
-                  {currentCandidate.paymentStatus === 'lunas' ? 'LUNAS' : 'Belum Lunas'}
-                </span>
-              </div>
-              <div>
-                <h3 className="font-bold text-slate-900 text-base">Pembayaran Registrasi</h3>
-                <p className="text-xs text-slate-500 mt-1">
-                  {currentCandidate.paymentStatus === 'lunas'
-                    ? 'Pembayaran DP pendaftaran telah dikonfirmasi Lunas.'
-                    : 'Lakukan pembayaran DP via Midtrans QRIS/VA.'}
-                </p>
+            <div className="bg-white p-5 rounded-2xl border border-slate-200 shadow-2xs space-y-3 flex flex-col justify-between">
+              <div className="space-y-2">
+                <div className="flex items-center justify-between">
+                  <span className="p-2 bg-emerald-50 text-emerald-800 rounded-xl border border-emerald-100">
+                    <CreditCard className="w-5 h-5" />
+                  </span>
+                  <span
+                    className={`text-[10px] font-bold px-2 py-0.5 rounded-full border ${
+                      currentCandidate.paymentStatus === 'lunas'
+                        ? 'bg-emerald-50 text-emerald-800 border-emerald-200'
+                        : 'bg-amber-50 text-amber-900 border-amber-200'
+                    }`}
+                  >
+                    {currentCandidate.paymentStatus === 'lunas' ? 'LUNAS' : 'Belum Lunas'}
+                  </span>
+                </div>
+                <div>
+                  <h3 className="font-bold text-slate-900 text-sm">Pembayaran DP</h3>
+                  <p className="text-xs text-slate-500 mt-0.5 line-clamp-2">
+                    {currentCandidate.paymentStatus === 'lunas'
+                      ? 'Pembayaran DP telah terkonfirmasi.'
+                      : 'Lakukan pembayaran DP via QRIS/VA.'}
+                  </p>
+                </div>
               </div>
               <button
                 onClick={() => {
@@ -513,42 +526,44 @@ export const StudentDashboard: React.FC = () => {
                     setIsPaymentModalOpen(true);
                   }
                 }}
-                className="w-full text-center bg-emerald-600 hover:bg-emerald-500 text-white font-bold py-2.5 rounded-xl transition text-xs shadow-xs focus-visible:ring-2 focus-visible:ring-emerald-400"
+                className="w-full text-center bg-[#0F3D7A] hover:bg-[#0C2340] text-white font-bold py-2 rounded-xl transition text-xs cursor-pointer"
               >
-                {currentCandidate.paymentStatus === 'lunas' ? 'Lihat & Cetak Bukti Bayar' : 'Bayar Sekarang'}
+                {currentCandidate.paymentStatus === 'lunas' ? 'Bukti Bayar' : 'Bayar Sekarang'}
               </button>
             </div>
 
             {/* Card 4: Sertifikat Digital LMS */}
-            <div className="bg-white p-6 rounded-3xl border border-slate-200 shadow-xs space-y-4">
-              <div className="flex items-center justify-between">
-                <span className="p-3 bg-amber-50 text-amber-700 rounded-2xl">
-                  <Award className="w-6 h-6" />
-                </span>
-                <span
-                  className={`text-[10px] font-bold px-2.5 py-1 rounded-full ${
-                    candidateLmsModules.every((m) => m.isCompleted)
-                      ? 'bg-emerald-100 text-emerald-800'
-                      : 'bg-amber-100 text-amber-900'
-                  }`}
-                >
-                  {candidateLmsModules.filter((m) => m.isCompleted).length}/{candidateLmsModules.length} Modul
-                </span>
-              </div>
-              <div>
-                <h3 className="font-bold text-slate-900 text-base">Sertifikat Digital LMS</h3>
-                <p className="text-xs text-slate-500 mt-1">
-                  {candidateLmsModules.every((m) => m.isCompleted)
-                    ? 'Seluruh modul tuntas (100%). Sertifikat digital & PDF summary card siap diunduh.'
-                    : 'Selesaikan seluruh modul pelatihan untuk mengklaim Sertifikat Digital Kelulusan resmi.'}
-                </p>
+            <div className="bg-white p-5 rounded-2xl border border-slate-200 shadow-2xs space-y-3 flex flex-col justify-between">
+              <div className="space-y-2">
+                <div className="flex items-center justify-between">
+                  <span className="p-2 bg-amber-50 text-amber-800 rounded-xl border border-amber-100">
+                    <Award className="w-5 h-5" />
+                  </span>
+                  <span
+                    className={`text-[10px] font-bold px-2 py-0.5 rounded-full border ${
+                      candidateLmsModules.every((m) => m.isCompleted)
+                        ? 'bg-emerald-50 text-emerald-800 border-emerald-200'
+                        : 'bg-slate-100 text-slate-700 border-slate-200'
+                    }`}
+                  >
+                    {candidateLmsModules.filter((m) => m.isCompleted).length}/{candidateLmsModules.length} Modul
+                  </span>
+                </div>
+                <div>
+                  <h3 className="font-bold text-slate-900 text-sm">Sertifikat Digital</h3>
+                  <p className="text-xs text-slate-500 mt-0.5 line-clamp-2">
+                    {candidateLmsModules.every((m) => m.isCompleted)
+                      ? 'Seluruh modul tuntas. Sertifikat siap.'
+                      : 'Tuntaskan materi untuk sertifikat.'}
+                  </p>
+                </div>
               </div>
               <button
                 onClick={() => setIsCertificateModalOpen(true)}
-                className="w-full text-center bg-amber-600 hover:bg-amber-700 text-white font-bold py-2.5 rounded-xl transition text-xs shadow-xs flex items-center justify-center gap-1.5 cursor-pointer"
+                className="w-full text-center bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold py-2 rounded-xl transition text-xs flex items-center justify-center gap-1 cursor-pointer"
               >
-                <Award className="w-4 h-4 text-amber-200" />
-                <span>Lihat Sertifikat Digital</span>
+                <Award className="w-3.5 h-3.5" />
+                <span>Lihat Sertifikat</span>
               </button>
             </div>
           </div>

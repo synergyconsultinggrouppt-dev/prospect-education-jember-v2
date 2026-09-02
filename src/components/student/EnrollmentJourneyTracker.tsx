@@ -315,18 +315,22 @@ export const EnrollmentJourneyTracker: React.FC<EnrollmentJourneyTrackerProps> =
         </div>
       </div>
 
-      {/* Horizontal Multi-Step Stepper Component */}
+      {/* Stepper Pipeline (Horizontal Swipeable Track & Clean Responsive Flow) */}
       <div className="space-y-3">
-        <div className="flex items-center justify-between">
+        <div className="flex items-center justify-between flex-wrap gap-2">
           <span className="text-xs font-bold text-slate-700 uppercase tracking-wider">
-            {t('Tahapan Alur Pendaftaran (Klik Tahap Untuk Detail):', 'Enrollment Journey Pipeline (Click step for details):')}
+            {t('Tahapan Alur Pendaftaran (Pilih Tahap):', 'Enrollment Journey Pipeline:')}
           </span>
           <span className="text-[11px] text-slate-500">
-            {t('Langkah Aktif:', 'Active Stage:')} <strong className="text-red-800">{stages[currentActiveStageIdx]?.titleId}</strong>
+            {t('Tahap Sedang Berjalan:', 'Current Active:')}{' '}
+            <span className="font-bold text-[#0F3D7A] bg-blue-50 px-2 py-0.5 rounded-md border border-blue-200">
+              #{currentActiveStageIdx + 1} {stages[currentActiveStageIdx]?.titleId}
+            </span>
           </span>
         </div>
 
-        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 xl:grid-cols-7 gap-2.5">
+        {/* Horizontal scrollable stepper track on mobile, responsive grid on desktop */}
+        <div className="flex sm:grid sm:grid-cols-4 lg:grid-cols-7 gap-2 overflow-x-auto pb-2 sm:pb-0 scrollbar-thin scrollbar-thumb-slate-300">
           {stages.map((stg, idx) => {
             const IconComp = stg.icon;
             const isSelected = selectedStageIdx === idx;
@@ -336,63 +340,56 @@ export const EnrollmentJourneyTracker: React.FC<EnrollmentJourneyTrackerProps> =
                 key={stg.key}
                 type="button"
                 onClick={() => setSelectedStageIdx(idx)}
-                className={`p-3 rounded-2xl border text-left flex flex-col justify-between transition-all duration-200 focus:outline-none relative min-h-[110px] ${
+                className={`p-3 rounded-2xl border text-left flex flex-col justify-between transition-all duration-150 focus:outline-none shrink-0 w-[145px] sm:w-auto min-h-[96px] cursor-pointer ${
                   isSelected
-                    ? 'bg-[#0F3D7A] text-white border-amber-400 shadow-md ring-2 ring-blue-500 scale-[1.02]'
+                    ? 'bg-[#0F3D7A] text-white border-amber-400 shadow-md ring-2 ring-blue-400/50'
                     : stg.isCompleted
-                    ? 'bg-emerald-50/80 border-emerald-300 text-emerald-900 hover:bg-emerald-100'
+                    ? 'bg-emerald-50/90 border-emerald-300 text-emerald-950 hover:bg-emerald-100'
                     : stg.isCurrent
-                    ? 'bg-amber-50 border-amber-400 text-slate-900 font-bold hover:bg-amber-100'
-                    : 'bg-slate-50 border-slate-200 text-slate-500 hover:bg-slate-100'
+                    ? 'bg-blue-50/90 border-blue-300 text-blue-950 hover:bg-blue-100'
+                    : 'bg-slate-50 border-slate-200 text-slate-600 hover:bg-slate-100'
                 }`}
               >
-                {/* Status Icon */}
-                <div className="flex items-center justify-between mb-2">
+                {/* Status Icon & Step Number */}
+                <div className="flex items-center justify-between mb-1.5 w-full">
                   <span
-                    className={`w-7 h-7 rounded-xl flex items-center justify-center shrink-0 ${
+                    className={`w-6 h-6 rounded-lg flex items-center justify-center shrink-0 text-xs font-bold ${
                       isSelected
-                        ? 'bg-amber-500 text-slate-950 font-bold'
+                        ? 'bg-amber-400 text-slate-950'
                         : stg.isCompleted
                         ? 'bg-emerald-600 text-white'
                         : stg.isCurrent
-                        ? 'bg-[#2563EB] text-white'
-                        : 'bg-slate-200 text-slate-500'
-                    }`}
-                  >
-                    {stg.isCompleted ? <Check className="w-4 h-4" /> : <IconComp className="w-3.5 h-3.5" />}
-                  </span>
-
-                  <span
-                    className={`text-[9px] font-bold px-1.5 py-0.5 rounded ${
-                      isSelected
-                        ? 'bg-slate-900 text-amber-300'
-                        : stg.isCompleted
-                        ? 'bg-emerald-200 text-emerald-900'
-                        : stg.isCurrent
-                        ? 'bg-blue-100 text-[#0F3D7A]'
+                        ? 'bg-[#0F3D7A] text-white'
                         : 'bg-slate-200 text-slate-600'
                     }`}
                   >
-                    #{idx + 1}
+                    {stg.isCompleted ? <Check className="w-3.5 h-3.5 stroke-[3]" /> : `#${idx + 1}`}
+                  </span>
+
+                  <span
+                    className={`text-[9px] font-bold px-1.5 py-0.5 rounded whitespace-nowrap ${
+                      isSelected
+                        ? 'bg-white/20 text-white'
+                        : stg.isCompleted
+                        ? 'bg-emerald-200 text-emerald-900'
+                        : stg.isCurrent
+                        ? 'bg-blue-200 text-blue-900'
+                        : 'bg-slate-200 text-slate-600'
+                    }`}
+                  >
+                    {t(stg.statusBadgeId, stg.statusBadgeEn)}
                   </span>
                 </div>
 
                 {/* Title */}
                 <div>
                   <h4
-                    className={`text-[11px] font-bold line-clamp-2 leading-snug ${
+                    className={`text-xs font-bold line-clamp-2 leading-snug ${
                       isSelected ? 'text-white' : 'text-slate-900'
                     }`}
                   >
                     {t(stg.titleId, stg.titleEn)}
                   </h4>
-                  <p
-                    className={`text-[10px] mt-1 truncate ${
-                      isSelected ? 'text-amber-200' : stg.isCompleted ? 'text-emerald-700' : 'text-slate-500'
-                    }`}
-                  >
-                    {t(stg.statusBadgeId, stg.statusBadgeEn)}
-                  </p>
                 </div>
               </button>
             );
@@ -400,98 +397,103 @@ export const EnrollmentJourneyTracker: React.FC<EnrollmentJourneyTrackerProps> =
         </div>
       </div>
 
-      {/* Expanded Active Stage Detail Card */}
-      <div className="bg-slate-900 text-white p-6 rounded-3xl border border-slate-800 space-y-5 animate-in fade-in duration-200 relative overflow-hidden">
-        {/* Background glow accent */}
-        <div className="absolute top-0 right-0 w-64 h-64 bg-blue-600/10 rounded-full blur-2xl pointer-events-none" />
-
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-slate-800 pb-4 relative z-10">
-          <div className="flex items-center gap-3">
-            <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-[#0F3D7A] to-[#2563EB] text-white font-bold flex items-center justify-center shrink-0 shadow-md border border-amber-400/30">
-              <activeStage.icon className="w-6 h-6 text-amber-200" />
+      {/* Expanded Active Stage Detail Card - Clean, High Contrast, Readable */}
+      <div className="bg-slate-900 text-white rounded-3xl border border-slate-800 overflow-hidden shadow-lg space-y-0 animate-in fade-in duration-150">
+        {/* Header bar */}
+        <div className="p-5 sm:p-6 bg-gradient-to-r from-slate-900 via-[#0F3D7A]/80 to-slate-900 border-b border-slate-800/80 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+          <div className="flex items-start sm:items-center gap-3.5">
+            <div className="w-11 h-11 rounded-2xl bg-amber-400 text-slate-950 font-bold flex items-center justify-center shrink-0 shadow-md">
+              <activeStage.icon className="w-5 h-5 text-slate-950" />
             </div>
-            <div>
-              <div className="flex items-center gap-2">
-                <h3 className="text-lg font-bold text-white font-serif">
+            <div className="space-y-1">
+              <div className="flex items-center gap-2 flex-wrap">
+                <h3 className="text-base sm:text-lg font-bold text-white font-serif">
                   {t(activeStage.titleId, activeStage.titleEn)}
                 </h3>
                 <span
-                  className={`text-[10px] font-bold px-2.5 py-0.5 rounded-full border ${
+                  className={`text-[10px] font-bold px-2.5 py-0.5 rounded-full border whitespace-nowrap ${
                     activeStage.isCompleted
-                      ? 'bg-emerald-950 border-emerald-600 text-emerald-400'
+                      ? 'bg-emerald-950/80 border-emerald-500 text-emerald-300'
                       : activeStage.isCurrent
-                      ? 'bg-amber-950 border-amber-500 text-amber-300'
-                      : 'bg-slate-800 border-slate-700 text-slate-400'
+                      ? 'bg-amber-950/80 border-amber-400 text-amber-300'
+                      : 'bg-slate-800 border-slate-700 text-slate-300'
                   }`}
                 >
                   {t(activeStage.statusBadgeId, activeStage.statusBadgeEn)}
                 </span>
               </div>
-              <p className="text-xs text-slate-300 mt-0.5">
+              <p className="text-xs text-slate-300 leading-relaxed max-w-2xl">
                 {t(activeStage.shortDescId, activeStage.shortDescEn)}
               </p>
             </div>
           </div>
 
-          <div className="flex items-center gap-2 self-start sm:self-auto text-xs bg-slate-950/80 px-3 py-1.5 rounded-xl border border-slate-800 text-slate-300">
+          <div className="flex items-center gap-2 self-start sm:self-auto text-xs bg-slate-950/90 px-3 py-1.5 rounded-xl border border-slate-700/60 text-slate-300 shrink-0">
             <Clock className="w-3.5 h-3.5 text-amber-400" />
             <span>
               {t('Estimasi Waktu:', 'Estimated Time:')}{' '}
-              <strong className="text-white">{t(activeStage.estimatedTimeId, activeStage.estimatedTimeEn)}</strong>
+              <strong className="text-white font-mono">{t(activeStage.estimatedTimeId, activeStage.estimatedTimeEn)}</strong>
             </span>
           </div>
         </div>
 
-        {/* Checklist of requirements for active stage */}
-        <div className="space-y-3 relative z-10">
-          <h4 className="text-xs font-bold text-amber-400 uppercase tracking-wider flex items-center gap-1.5">
-            <CheckCircle2 className="w-4 h-4 text-emerald-400" />
-            <span>{t('Daftar Periksa & Dokumen Tahap Ini:', 'Stage Requirements Checklist:')}</span>
-          </h4>
+        {/* Checklist Section */}
+        <div className="p-5 sm:p-6 space-y-4">
+          <div className="flex items-center justify-between">
+            <h4 className="text-xs font-bold text-amber-300 uppercase tracking-wider flex items-center gap-2">
+              <CheckCircle2 className="w-4 h-4 text-emerald-400" />
+              <span>{t('Daftar Periksa & Dokumen Tahap Ini:', 'Stage Requirements Checklist:')}</span>
+            </h4>
+            <span className="text-[11px] text-slate-400">
+              {activeStage.checklistItems.filter(i => i.completed).length} / {activeStage.checklistItems.length} Selesai
+            </span>
+          </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-2.5 text-xs">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
             {activeStage.checklistItems.map((item, idx) => (
               <div
                 key={idx}
-                className={`p-3 rounded-xl border flex items-center justify-between gap-2 ${
+                className={`p-3.5 rounded-xl border flex items-center justify-between gap-3 ${
                   item.completed
-                    ? 'bg-emerald-950/40 border-emerald-700/50 text-emerald-200'
-                    : 'bg-slate-950/60 border-slate-800 text-slate-300'
+                    ? 'bg-emerald-950/30 border-emerald-700/60 text-emerald-100'
+                    : 'bg-slate-800/60 border-slate-700/70 text-slate-200'
                 }`}
               >
-                <span className="flex items-center gap-2">
+                <div className="flex items-center gap-2.5 min-w-0">
                   <span
-                    className={`w-4 h-4 rounded-full flex items-center justify-center shrink-0 ${
-                      item.completed ? 'bg-emerald-500 text-slate-950' : 'bg-slate-800 text-slate-500'
+                    className={`w-5 h-5 rounded-full flex items-center justify-center shrink-0 ${
+                      item.completed ? 'bg-emerald-500 text-slate-950' : 'bg-slate-700 text-slate-400'
                     }`}
                   >
                     {item.completed ? <Check className="w-3 h-3 stroke-[3]" /> : <Clock className="w-3 h-3" />}
                   </span>
-                  <span className="leading-snug">{t(item.textId, item.textEn)}</span>
-                </span>
+                  <span className="text-xs font-medium leading-snug line-clamp-2">{t(item.textId, item.textEn)}</span>
+                </div>
 
-                <span className="text-[10px] font-bold uppercase shrink-0">
-                  {item.completed ? (
-                    <span className="text-emerald-400">{t('Selesai', 'Done')}</span>
-                  ) : (
-                    <span className="text-slate-500">{t('Belum', 'Pending')}</span>
-                  )}
+                <span
+                  className={`text-[10px] font-bold px-2 py-0.5 rounded uppercase shrink-0 whitespace-nowrap ${
+                    item.completed
+                      ? 'bg-emerald-900/80 text-emerald-300 border border-emerald-600/50'
+                      : 'bg-slate-700/80 text-slate-300 border border-slate-600'
+                  }`}
+                >
+                  {item.completed ? t('Selesai', 'Done') : t('Belum', 'Pending')}
                 </span>
               </div>
             ))}
           </div>
         </div>
 
-        {/* Action Button for Active Stage */}
-        <div className="pt-2 flex flex-col sm:flex-row items-center justify-between gap-3 border-t border-slate-800 relative z-10">
-          <p className="text-[11px] text-slate-400">
+        {/* Action Button Footer */}
+        <div className="p-4 sm:p-5 bg-slate-950/80 border-t border-slate-800 flex flex-col sm:flex-row items-center justify-between gap-3">
+          <p className="text-xs text-slate-400 text-center sm:text-left">
             {t(
-              'Butuh bantuan pengurusan dokumen atau konsultasi visa? Kontak tim layanan Cabang Jember.',
-              'Need assistance with document submission or visa consulting? Contact Jember office.'
+              'Butuh bantuan pengurusan dokumen atau konsultasi visa? Hubungi Admin Jember.',
+              'Need assistance with documents or visa consultation? Contact Jember Office.'
             )}
           </p>
 
-          <div className="flex items-center gap-2 w-full sm:w-auto">
+          <div className="flex items-center gap-2 w-full sm:w-auto justify-end">
             {activeStage.actionLabelId && (
               <button
                 type="button"
@@ -502,10 +504,10 @@ export const EnrollmentJourneyTracker: React.FC<EnrollmentJourneyTrackerProps> =
                     onNavigateTab(activeStage.actionTab);
                   }
                 }}
-                className="w-full sm:w-auto bg-gradient-to-r from-red-700 to-amber-600 hover:from-red-800 hover:to-amber-700 text-white font-bold text-xs px-5 py-2.5 rounded-xl shadow-md transition flex items-center justify-center gap-2"
+                className="w-full sm:w-auto bg-amber-500 hover:bg-amber-400 text-slate-950 font-black text-xs px-5 py-2.5 rounded-xl shadow-md transition flex items-center justify-center gap-2 cursor-pointer border border-amber-300"
               >
                 <span>{t(activeStage.actionLabelId, activeStage.actionLabelEn || '')}</span>
-                <ChevronRight className="w-4 h-4 text-amber-200" />
+                <ChevronRight className="w-4 h-4 text-slate-950" />
               </button>
             )}
           </div>

@@ -183,9 +183,23 @@ export function App() {
                 </>
               )}
 
-              {(activeTab === 'program' || activeTab === 'taiwan' || activeTab === 'jepang' || activeTab === 'programs') && (
+              {activeTab === 'taiwan' && (
                 <>
-                  <ProgramsSection />
+                  <ProgramsSection initialCategory="Taiwan" />
+                  <KontakSection />
+                </>
+              )}
+
+              {activeTab === 'jepang' && (
+                <>
+                  <ProgramsSection initialCategory="Jepang" />
+                  <KontakSection />
+                </>
+              )}
+
+              {(activeTab === 'program' || activeTab === 'programs') && (
+                <>
+                  <ProgramsSection initialCategory="All" />
                   <KontakSection />
                 </>
               )}

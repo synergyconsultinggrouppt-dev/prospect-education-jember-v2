@@ -13,10 +13,20 @@ import {
   FileText,
 } from 'lucide-react';
 
-export const ProgramsSection: React.FC = () => {
+interface ProgramsSectionProps {
+  initialCategory?: 'All' | 'Taiwan' | 'Jepang';
+}
+
+export const ProgramsSection: React.FC<ProgramsSectionProps> = ({ initialCategory = 'All' }) => {
   const { programs, t } = useApp();
-  const [selectedCategory, setSelectedCategory] = useState<'All' | 'Taiwan' | 'Jepang'>('All');
+  const [selectedCategory, setSelectedCategory] = useState<'All' | 'Taiwan' | 'Jepang'>(initialCategory);
   const [activeModalProgram, setActiveModalProgram] = useState<ProgramInfo | null>(null);
+
+  React.useEffect(() => {
+    if (initialCategory) {
+      setSelectedCategory(initialCategory);
+    }
+  }, [initialCategory]);
 
   const filteredPrograms = programs.filter(
     (p) => selectedCategory === 'All' || p.category === selectedCategory

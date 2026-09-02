@@ -393,19 +393,19 @@ export const TopPerformersLeaderboard: React.FC<TopPerformersLeaderboardProps> =
             return (
               <div
                 key={student.id}
-                className={`p-4 flex items-center justify-between gap-4 transition-colors ${
+                className={`p-3.5 sm:p-4 flex items-center justify-between gap-3 transition-colors ${
                   student.isCurrentUser
-                    ? 'bg-amber-50/80 border-l-4 border-l-amber-500'
+                    ? 'bg-amber-50/90 border-l-4 border-l-amber-500'
                     : 'hover:bg-slate-50/80'
                 }`}
               >
                 {/* Left: Rank & Student Details */}
-                <div className="flex items-center gap-3.5 min-w-0">
+                <div className="flex items-center gap-2.5 sm:gap-3.5 min-w-0 flex-1">
                   {/* Rank Number Badge */}
                   <div
-                    className={`w-9 h-9 rounded-xl flex items-center justify-center font-black text-xs font-mono shrink-0 ${
+                    className={`w-8 h-8 sm:w-9 sm:h-9 rounded-xl flex items-center justify-center font-black text-xs font-mono shrink-0 ${
                       student.rank === 1
-                        ? 'bg-amber-400 text-amber-950 shadow-xs'
+                        ? 'bg-amber-400 text-amber-950 shadow-xs ring-1 ring-amber-500/30'
                         : student.rank === 2
                         ? 'bg-slate-200 text-slate-800'
                         : student.rank === 3
@@ -417,7 +417,7 @@ export const TopPerformersLeaderboard: React.FC<TopPerformersLeaderboardProps> =
                   </div>
 
                   {/* Avatar */}
-                  <div className="w-10 h-10 rounded-xl bg-slate-100 border border-slate-200 overflow-hidden flex items-center justify-center font-bold text-slate-700 shrink-0">
+                  <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-slate-100 border border-slate-200 overflow-hidden flex items-center justify-center font-bold text-slate-700 shrink-0">
                     {student.avatarUrl ? (
                       <img src={student.avatarUrl} alt={student.fullName} className="w-full h-full object-cover" />
                     ) : (
@@ -426,45 +426,50 @@ export const TopPerformersLeaderboard: React.FC<TopPerformersLeaderboardProps> =
                   </div>
 
                   {/* Student Names & Badges */}
-                  <div className="min-w-0 space-y-0.5">
-                    <div className="flex items-center gap-2 flex-wrap">
+                  <div className="min-w-0 flex-1 space-y-0.5">
+                    <div className="flex items-center gap-1.5 flex-nowrap min-w-0">
                       <h4 className="font-bold text-slate-900 text-xs sm:text-sm truncate">
                         {student.fullName}
                       </h4>
                       {student.isCurrentUser && (
-                        <span className="bg-amber-500 text-amber-950 text-[9px] font-extrabold px-2 py-0.2 rounded-full uppercase tracking-wider">
+                        <span className="bg-amber-500 text-slate-950 text-[9px] font-extrabold px-1.5 py-0.2 rounded uppercase tracking-wider shrink-0 whitespace-nowrap">
                           Anda
                         </span>
                       )}
-                      <span className="text-[10px] font-semibold bg-slate-100 text-slate-600 px-2 py-0.5 rounded border border-slate-200 hidden sm:inline-block">
+                      <span className="text-[10px] font-semibold bg-slate-100 text-slate-600 px-1.5 py-0.5 rounded border border-slate-200 hidden sm:inline-block shrink-0 whitespace-nowrap">
                         {student.badgeTitle}
                       </span>
                     </div>
 
-                    <p className="text-[11px] text-slate-500 flex items-center gap-2 flex-wrap">
-                      <span className="font-mono text-slate-600">{student.registrationNumber}</span>
-                      <span>•</span>
-                      <span>{student.programName}</span>
-                      <span className="hidden md:inline">• {student.district}</span>
-                    </p>
+                    <div className="text-[11px] text-slate-500 flex items-center gap-1.5 min-w-0 overflow-hidden">
+                      <span className="font-mono text-slate-600 whitespace-nowrap break-keep shrink-0">
+                        {student.registrationNumber}
+                      </span>
+                      <span className="text-slate-300 shrink-0">•</span>
+                      <span className="truncate text-slate-600 font-medium">
+                        {student.programName}
+                      </span>
+                      <span className="hidden lg:inline text-slate-400 shrink-0">
+                        ({student.district})
+                      </span>
+                    </div>
                   </div>
                 </div>
 
                 {/* Right: Points & Modul Stats */}
-                <div className="text-right shrink-0 space-y-1">
-                  <div className="text-sm sm:text-base font-black text-slate-900 font-mono flex items-center justify-end gap-1">
-                    <Zap className="w-4 h-4 text-amber-500 fill-amber-500" />
+                <div className="text-right shrink-0 space-y-0.5 pl-2">
+                  <div className="text-xs sm:text-sm font-black text-slate-900 font-mono flex items-center justify-end gap-1 whitespace-nowrap">
+                    <Zap className="w-3.5 h-3.5 text-amber-500 fill-amber-500 shrink-0" />
                     <span>{student.totalPoints} XP</span>
                   </div>
 
-                  <div className="text-[10px] text-slate-500 flex items-center justify-end gap-2">
-                    <span className="flex items-center gap-1">
-                      <BookOpen className="w-3 h-3 text-red-600" />
+                  <div className="text-[10px] text-slate-500 flex items-center justify-end gap-1.5 whitespace-nowrap">
+                    <span className="flex items-center gap-1 text-red-700 font-semibold">
+                      <BookOpen className="w-3 h-3 shrink-0" />
                       {student.completedModulesCount} Modul
                     </span>
-                    <span className="hidden sm:inline">•</span>
-                    <span className="hidden sm:flex items-center gap-1">
-                      <Clock className="w-3 h-3 text-slate-400" />
+                    <span className="hidden sm:inline text-slate-300">•</span>
+                    <span className="hidden sm:inline text-slate-400 font-mono">
                       {student.totalTimeMinutes} mnt
                     </span>
                   </div>

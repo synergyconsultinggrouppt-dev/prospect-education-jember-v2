@@ -183,7 +183,7 @@ export function App() {
                 </>
               )}
 
-              {activeTab === 'program' && (
+              {(activeTab === 'program' || activeTab === 'taiwan' || activeTab === 'jepang' || activeTab === 'programs') && (
                 <>
                   <ProgramsSection />
                   <KontakSection />
@@ -271,6 +271,13 @@ export function App() {
                 </div>
               )}
 
+              {(activeTab === 'testimoni' || activeTab === 'testimonials') && (
+                <>
+                  <TestimonialsSection />
+                  <KontakSection />
+                </>
+              )}
+
               {activeTab === 'berita' && (
                 <>
                   <BeritaSection />
@@ -292,7 +299,7 @@ export function App() {
                 </>
               )}
 
-              {(activeTab === 'kritik_saran' || activeTab === 'kritiksaran') && (
+              {(activeTab === 'kritik' || activeTab === 'kritik_saran' || activeTab === 'kritiksaran') && (
                 <>
                   <KritikSaranSection />
                   <KontakSection />

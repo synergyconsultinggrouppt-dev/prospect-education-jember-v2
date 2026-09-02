@@ -124,15 +124,15 @@ export const NotificationBell: React.FC<{ className?: string }> = ({ className =
         aria-expanded={isOpen}
         aria-haspopup="true"
         aria-controls="notification-popover"
-        className="relative p-2.5 rounded-full text-slate-700 hover:text-red-600 hover:bg-slate-100 transition-all focus-visible:ring-2 focus-visible:ring-red-600 focus-visible:outline-hidden"
+        className="relative p-2 sm:p-2.5 rounded-xl text-slate-700 dark:text-slate-200 hover:text-[#0F3D7A] dark:hover:text-amber-300 hover:bg-slate-100 dark:hover:bg-slate-800 transition-all focus-visible:ring-2 focus-visible:ring-[#0F3D7A] focus-visible:outline-hidden cursor-pointer"
         title={t('Notifikasi & Alert', 'Notifications & Alerts')}
         aria-label={`${t('Notifikasi & Alert', 'Notifications & Alerts')} (${relevantUnreadCount} belum dibaca)`}
       >
-        <Bell className="w-5 h-5" aria-hidden="true" />
+        <Bell className="w-4.5 h-4.5 sm:w-5 sm:h-5" aria-hidden="true" />
         {relevantUnreadCount > 0 && (
-          <span className="absolute top-1 right-1 flex h-4 w-4 items-center justify-center">
+          <span className="absolute -top-0.5 -right-0.5 flex h-4 w-4 items-center justify-center">
             <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75"></span>
-            <span className="relative inline-flex rounded-full h-4 w-4 bg-red-600 text-[10px] font-bold text-white items-center justify-center">
+            <span className="relative inline-flex rounded-full h-4 w-4 bg-red-600 text-[10px] font-black text-white items-center justify-center shadow-xs">
               {relevantUnreadCount > 9 ? '9+' : relevantUnreadCount}
             </span>
           </span>

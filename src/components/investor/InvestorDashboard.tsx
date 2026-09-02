@@ -204,31 +204,35 @@ export const InvestorDashboard: React.FC = () => {
 
   return (
     <div className="max-w-7xl mx-auto px-4 py-8 space-y-8 text-slate-800 bg-slate-50/50">
-      {/* Executive Header */}
-      <div className="bg-gradient-to-r from-[#0F3D7A] via-sky-900 to-slate-900 text-white p-6 sm:p-8 rounded-3xl border border-sky-300/30 shadow-md flex flex-col md:flex-row items-center justify-between gap-6">
-        <div className="space-y-1 text-center md:text-left">
-          <div className="inline-flex items-center gap-2 bg-sky-950/80 border border-sky-400/30 text-sky-300 px-3 py-1 rounded-full text-xs font-bold">
-            <ShieldCheck className="w-3.5 h-3.5 text-emerald-400" />
-            <span>PORTAL EKSEKUTIF INVESTOR & STAKEHOLDER</span>
+      {/* Executive Header - Clean Institutional Design */}
+      <div className="bg-[#0C2340] text-white p-5 sm:p-7 rounded-3xl border border-slate-800 shadow-md flex flex-col md:flex-row items-center justify-between gap-5">
+        <div className="space-y-1.5 text-center md:text-left">
+          <div className="flex items-center gap-2 justify-center md:justify-start flex-wrap">
+            <span className="text-[10px] font-bold uppercase tracking-wider bg-blue-950 text-blue-300 px-2.5 py-0.5 rounded-md border border-blue-800/80">
+              Portal Eksekutif & Investor
+            </span>
+            <span className="text-[10px] font-semibold bg-slate-800 text-slate-300 px-2 py-0.5 rounded-md">
+              Cabang Jember
+            </span>
           </div>
-          <h1 className="text-2xl sm:text-3xl font-black font-serif text-white">
-            Laporan Kinerja Keuangan & Pertumbuhan Cabang Jember
+          <h1 className="text-xl sm:text-2xl font-bold font-serif text-white">
+            Laporan Kinerja Keuangan & Pertumbuhan
           </h1>
-          <p className="text-xs text-slate-200 max-w-xl">
-            Ringkasan kaji dampak investasi, tingkat pengembalian (ROI), performa registrasi peserta, dan proyeksi arus kas.
+          <p className="text-xs text-slate-300 max-w-xl">
+            Ringkasan dampak investasi, estimasi ROI, performa pendaftaran peserta, dan proyeksi arus kas operasional.
           </p>
         </div>
 
-        <div className="flex flex-wrap items-center gap-3 shrink-0">
-          <div className="bg-sky-950/90 p-1 rounded-2xl border border-sky-400/30">
+        <div className="flex flex-wrap items-center justify-center md:justify-end gap-2 shrink-0">
+          <div className="bg-slate-800 p-1 rounded-xl border border-slate-700">
             <NotificationBell />
           </div>
           <button
             onClick={() => setIsPdfModalOpen(true)}
-            className="bg-amber-400 hover:bg-amber-300 text-slate-950 font-black text-xs px-5 py-3 rounded-xl shadow-xs transition flex items-center justify-center gap-2 shrink-0 cursor-pointer"
+            className="bg-amber-400 hover:bg-amber-300 text-slate-950 font-bold text-xs px-4 py-2 rounded-xl transition flex items-center gap-1.5 shadow-sm cursor-pointer"
           >
-            <Download className="w-4 h-4 text-slate-950" />
-            <span>Unduh Laporan Laba Rugi (PDF)</span>
+            <Download className="w-3.5 h-3.5 text-slate-950" />
+            <span>Laporan Laba Rugi PDF</span>
           </button>
         </div>
       </div>

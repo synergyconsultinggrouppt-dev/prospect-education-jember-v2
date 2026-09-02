@@ -20,6 +20,7 @@ import { FAQSection } from './components/public/FAQSection';
 import { KritikSaranSection } from './components/public/KritikSaranSection';
 import { KontakSection } from './components/public/KontakSection';
 import { RegistrationForm } from './components/public/RegistrationForm';
+import { CostEarningsCalculator } from './components/public/CostEarningsCalculator';
 
 // Role Dashboards
 import { StudentDashboard } from './components/student/StudentDashboard';
@@ -165,6 +166,7 @@ export function App() {
                   <HeroSection />
                   <CompanyProfileSection />
                   <ProgramsSection />
+                  <CostEarningsCalculator />
                   <PendaftaranFlowSection />
                   <LayananSection />
                   <TestimonialsSection />
@@ -186,6 +188,7 @@ export function App() {
               {activeTab === 'taiwan' && (
                 <>
                   <ProgramsSection initialCategory="Taiwan" />
+                  <CostEarningsCalculator />
                   <KontakSection />
                 </>
               )}
@@ -193,6 +196,7 @@ export function App() {
               {activeTab === 'jepang' && (
                 <>
                   <ProgramsSection initialCategory="Jepang" />
+                  <CostEarningsCalculator />
                   <KontakSection />
                 </>
               )}
@@ -200,6 +204,14 @@ export function App() {
               {(activeTab === 'program' || activeTab === 'programs') && (
                 <>
                   <ProgramsSection initialCategory="All" />
+                  <CostEarningsCalculator />
+                  <KontakSection />
+                </>
+              )}
+
+              {(activeTab === 'kalkulator' || activeTab === 'calculator') && (
+                <>
+                  <CostEarningsCalculator />
                   <KontakSection />
                 </>
               )}

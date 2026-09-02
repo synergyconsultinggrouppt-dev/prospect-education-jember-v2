@@ -532,8 +532,21 @@ export const FileUploadZone: React.FC<FileUploadZoneProps> = ({ onSuccessUpload,
                   )}
 
                   {doc.notes && (
-                    <div className="p-2.5 bg-amber-100 dark:bg-amber-950 text-amber-900 dark:text-amber-200 rounded-xl text-[11px] font-medium border border-amber-300 dark:border-amber-800">
-                      <strong>Catatan Admin Review:</strong> {doc.notes}
+                    <div className="p-2.5 bg-amber-50 dark:bg-amber-950/40 text-amber-950 dark:text-amber-200 rounded-xl text-[11px] font-medium border border-amber-300 dark:border-amber-800 space-y-1.5">
+                      <p><strong>Catatan Admin Verifikasi:</strong> {doc.notes}</p>
+                      {doc.status === 'rejected' && (
+                        <a
+                          href={`https://wa.me/6282334554396?text=${encodeURIComponent(
+                            `Halo Admin Prospect Education Jember, saya ${currentCandidate?.fullName || 'Peserta'} (${currentCandidate?.registrationNumber || ''}) ingin konsultasi terkait revisi berkas: ${doc.title}. Catatan admin: "${doc.notes}". Mohon arahannya.`
+                          )}`}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="inline-flex items-center gap-1.5 text-[10px] font-bold text-emerald-700 bg-white dark:bg-slate-900 px-2.5 py-1 rounded-lg border border-emerald-300 hover:bg-emerald-50 transition shadow-2xs"
+                        >
+                          <HelpCircle className="w-3.5 h-3.5 text-emerald-600" />
+                          <span>Konsultasi Revisi via WhatsApp</span>
+                        </a>
+                      )}
                     </div>
                   )}
                 </div>

@@ -457,70 +457,60 @@ export const AdminDashboard: React.FC = () => {
 
   return (
     <div className="max-w-7xl mx-auto px-4 py-8 space-y-8 text-slate-800 bg-slate-50/50">
-      {/* Top Header */}
-      <div className="bg-gradient-to-r from-[#0F3D7A] via-sky-900 to-slate-900 text-white p-6 sm:p-8 rounded-3xl border border-sky-300/30 shadow-md flex flex-col md:flex-row items-center justify-between gap-6">
-        <div className="space-y-1 text-center md:text-left">
-          <span className="text-[10px] font-bold uppercase tracking-widest text-sky-200 bg-sky-950/80 px-3 py-1 rounded-full border border-sky-400/30">
-            {isSuperAdmin ? 'PANEL KONTROL SUPER ADMIN (PUSAT)' : 'PANEL OPERASIONAL ADMIN CABANG JEMBER'}
-          </span>
-          <h1 className="text-2xl sm:text-3xl font-black font-serif text-white">
+      {/* Top Header - Clean Institutional Design */}
+      <div className="bg-[#0C2340] text-white p-5 sm:p-7 rounded-3xl border border-slate-800 shadow-md flex flex-col md:flex-row items-center justify-between gap-5">
+        <div className="space-y-1.5 text-center md:text-left">
+          <div className="flex items-center gap-2 justify-center md:justify-start flex-wrap">
+            <span className="text-[10px] font-bold uppercase tracking-wider bg-blue-950 text-blue-300 px-2.5 py-0.5 rounded-md border border-blue-800/80">
+              {isSuperAdmin ? 'Panel Super Admin Pusat' : 'Panel Operasional Admin Jember'}
+            </span>
+          </div>
+          <h1 className="text-xl sm:text-2xl font-bold font-serif text-white">
             {isSuperAdmin
               ? 'Sistem Pengawasan Pusat & Otorisasi Final'
               : 'Manajemen Operasional & Verifikasi Berkas'}
           </h1>
-          <p className="text-xs text-slate-200 max-w-xl">
+          <p className="text-xs text-slate-300 max-w-xl">
             Sistem Informasi Terpadu Prospect Education. Mengelola pendaftaran peserta, verifikasi berkas, pencatatan keuangan, dan persetujuan LoA.
           </p>
         </div>
 
-        <div className="flex flex-wrap items-center gap-3">
+        <div className="flex flex-wrap items-center justify-center md:justify-end gap-2">
           <button
             onClick={() => setIsEmailModalOpen(true)}
-            className="px-3.5 py-2.5 bg-indigo-900 hover:bg-indigo-800 text-indigo-100 border border-indigo-400/40 font-bold text-xs rounded-xl shadow-xs transition flex items-center gap-2 cursor-pointer"
-            title="Kelola Integrasi Notifikasi Email Otomatis & Log SMTP"
+            className="px-3 py-2 bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 font-medium text-xs rounded-xl transition flex items-center gap-1.5 cursor-pointer"
+            title="Kelola Integrasi Notifikasi Email Otomatis"
           >
-            <Mail className="w-4 h-4 text-indigo-300" />
-            <span>Gateway Email Notifikasi</span>
+            <Mail className="w-3.5 h-3.5 text-indigo-300" />
+            <span>Gateway Email</span>
           </button>
 
           <button
             onClick={() => setIsWhatsAppModalOpen(true)}
-            className="px-3.5 py-2.5 bg-emerald-800 hover:bg-emerald-700 text-emerald-100 border border-emerald-400/40 font-bold text-xs rounded-xl shadow-xs transition flex items-center gap-2 cursor-pointer"
-            title="Kelola & Integrasi Gateway WhatsApp Notifikasi Otomatis"
+            className="px-3 py-2 bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 font-medium text-xs rounded-xl transition flex items-center gap-1.5 cursor-pointer"
+            title="Kelola Gateway WhatsApp Notifikasi"
           >
-            <MessageCircle className="w-4 h-4 text-emerald-300" />
-            <span>Gateway WhatsApp</span>
+            <MessageCircle className="w-3.5 h-3.5 text-emerald-400" />
+            <span>Gateway WA</span>
           </button>
 
           <button
             onClick={() => setIsVerificationModalOpen(true)}
-            className="px-3.5 py-2.5 bg-sky-950 hover:bg-sky-900 text-amber-300 border border-amber-400/40 font-bold text-xs rounded-xl shadow-xs transition flex items-center gap-2 cursor-pointer"
-            title="Scan atau Cek Validasi Keaslian QR Code Surat LoA"
+            className="px-3 py-2 bg-slate-800 hover:bg-slate-700 text-amber-300 border border-slate-700 font-medium text-xs rounded-xl transition flex items-center gap-1.5 cursor-pointer"
+            title="Validasi Keaslian QR Code Surat LoA"
           >
-            <ShieldCheck className="w-4 h-4 text-amber-300" />
-            <span>Validasi QR LoA</span>
+            <ShieldCheck className="w-3.5 h-3.5 text-amber-300" />
+            <span>Validasi LoA</span>
           </button>
 
           <button
             onClick={() => setIsPdfReportModalOpen(true)}
-            className="px-3.5 py-2.5 bg-amber-400 hover:bg-amber-300 text-slate-950 font-bold text-xs rounded-xl shadow-xs transition flex items-center gap-2 cursor-pointer"
-            title="Unduh Laporan PDF Eksekutif Kelembagaan & Operasional"
+            className="px-3.5 py-2 bg-amber-400 hover:bg-amber-300 text-slate-950 font-bold text-xs rounded-xl transition flex items-center gap-1.5 shadow-sm cursor-pointer"
+            title="Unduh Laporan PDF Eksekutif Kelembagaan"
           >
-            <Download className="w-4 h-4 text-slate-950" />
-            <span>Unduh Laporan PDF</span>
+            <Download className="w-3.5 h-3.5 text-slate-950" />
+            <span>Laporan PDF</span>
           </button>
-
-          <div className="flex items-center gap-3 bg-sky-950/90 p-3 rounded-2xl border border-sky-400/30 text-xs">
-            <div className="p-2.5 bg-sky-900/60 text-amber-300 rounded-xl">
-              <TrendingUp className="w-5 h-5" />
-            </div>
-            <div>
-              <p className="text-[10px] text-sky-200">Total Kas Terpenuhi (Jember):</p>
-              <p className="text-base font-black text-amber-300 font-mono">
-                Rp {totalIncome.toLocaleString('id-ID')}
-              </p>
-            </div>
-          </div>
         </div>
       </div>
 

@@ -897,6 +897,33 @@ export const StudentDashboard: React.FC = () => {
       {activeTab === 'badges' && <StudentBadges candidate={currentCandidate} />}
       {activeTab === 'chat' && <StudentChat />}
 
+      {/* Official Help & Support WhatsApp Card */}
+      <div className="bg-white p-5 rounded-2xl border border-slate-200 shadow-2xs flex flex-col sm:flex-row items-center justify-between gap-4">
+        <div className="flex items-center gap-3 text-center sm:text-left">
+          <div className="w-10 h-10 rounded-xl bg-emerald-50 text-emerald-700 flex items-center justify-center shrink-0 border border-emerald-100">
+            <HelpCircle className="w-5 h-5 text-emerald-600" />
+          </div>
+          <div>
+            <h4 className="font-bold text-slate-900 text-xs sm:text-sm">Butuh Bantuan atau Panduan Administrasi?</h4>
+            <p className="text-[11px] text-slate-500 mt-0.5">
+              Konsultan dan Tim Verifikasi Prospect Education Cabang Jember siap mendampingi proses Anda.
+            </p>
+          </div>
+        </div>
+
+        <a
+          href={`https://wa.me/6282334554396?text=${encodeURIComponent(
+            `Halo Admin Prospect Education Cabang Jember, saya ${currentCandidate.fullName} (ID: ${currentCandidate.registrationNumber}) membutuhkan informasi dan bantuan terkait proses pendaftaran program ${currentCandidate.selectedProgram}. Terima kasih.`
+          )}`}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs px-4 py-2.5 rounded-xl transition flex items-center gap-2 shadow-xs shrink-0 cursor-pointer"
+        >
+          <MessageCircle className="w-4 h-4" />
+          <span>Hubungi CS WhatsApp</span>
+        </a>
+      </div>
+
       {/* Midtrans Modal */}
       <PaymentGatewayModal
         isOpen={isPaymentModalOpen}

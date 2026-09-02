@@ -145,7 +145,7 @@ export const NotificationBell: React.FC<{ className?: string }> = ({ className =
           id="notification-popover"
           role="dialog"
           aria-label={t('Pemberitahuan & Alert', 'Notifications & Alerts')}
-          className="absolute right-0 mt-2 w-80 sm:w-96 bg-white rounded-2xl shadow-2xl border border-slate-200 z-50 overflow-hidden animate-in fade-in slide-in-from-top-2 duration-200"
+          className="fixed inset-x-2.5 top-16 sm:absolute sm:inset-auto sm:right-0 sm:top-full sm:mt-2 w-auto sm:w-96 max-w-[calc(100vw-1.25rem)] bg-white rounded-2xl shadow-2xl border border-slate-200 z-50 overflow-hidden animate-in fade-in slide-in-from-top-2 duration-200"
         >
           {/* Header */}
           <div className="p-4 bg-[#0F3D7A] text-white flex items-center justify-between border-b border-blue-900">

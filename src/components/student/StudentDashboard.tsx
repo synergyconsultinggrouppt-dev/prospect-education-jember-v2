@@ -240,10 +240,6 @@ export const StudentDashboard: React.FC = () => {
             <span>Pengaturan Profil</span>
           </button>
 
-          <div className="bg-sky-950/90 border border-sky-400/30 p-1 rounded-2xl flex items-center justify-center shrink-0">
-            <NotificationBell />
-          </div>
-
           <button
             onClick={() => downloadStudentProfilePDF(currentCandidate, candidateLmsModules)}
             className="bg-amber-500 hover:bg-amber-400 text-slate-950 font-black text-xs px-3.5 py-2.5 rounded-xl shadow-md transition flex items-center justify-center gap-2 shrink-0 cursor-pointer border border-amber-300"

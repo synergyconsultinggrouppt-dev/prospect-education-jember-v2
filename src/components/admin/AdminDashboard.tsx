@@ -510,10 +510,6 @@ export const AdminDashboard: React.FC = () => {
             <span>Unduh Laporan PDF</span>
           </button>
 
-          <div className="bg-sky-950/90 p-1 rounded-2xl border border-sky-400/30 flex items-center justify-center">
-            <NotificationBell />
-          </div>
-
           <div className="flex items-center gap-3 bg-sky-950/90 p-3 rounded-2xl border border-sky-400/30 text-xs">
             <div className="p-2.5 bg-sky-900/60 text-amber-300 rounded-xl">
               <TrendingUp className="w-5 h-5" />

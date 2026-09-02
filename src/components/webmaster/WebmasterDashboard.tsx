@@ -167,30 +167,28 @@ export const WebmasterDashboard: React.FC = () => {
               </p>
             </div>
 
-            <div className="flex flex-wrap items-center gap-3">
-              <div className="bg-slate-900/80 border border-indigo-800/60 px-4 py-2.5 rounded-2xl flex items-center gap-3 text-xs">
-                <span className="p-2 bg-emerald-500/20 text-emerald-400 rounded-xl">
-                  <Activity className="w-5 h-5 animate-pulse" />
+            <div className="flex flex-wrap items-center gap-2 sm:gap-3">
+              <div className="bg-slate-900/80 border border-indigo-800/60 px-3.5 py-2 rounded-2xl flex items-center gap-2.5 text-xs">
+                <span className="p-1.5 sm:p-2 bg-emerald-500/20 text-emerald-400 rounded-xl">
+                  <Activity className="w-4 h-4 sm:w-5 sm:h-5 animate-pulse" />
                 </span>
                 <div>
-                  <span className="text-[10px] text-slate-400 uppercase font-bold block">Status Server</span>
-                  <span className="font-bold text-emerald-400 flex items-center gap-1">
-                    <span className="w-2 h-2 rounded-full bg-emerald-400"></span> Online (99.9% Uptime)
+                  <span className="text-[9px] sm:text-[10px] text-slate-400 uppercase font-bold block">Status Server</span>
+                  <span className="font-bold text-emerald-400 text-xs sm:text-sm flex items-center gap-1">
+                    <span className="w-1.5 h-1.5 rounded-full bg-emerald-400"></span> Online (99.9%)
                   </span>
                 </div>
               </div>
 
-              <div className="bg-slate-900/80 border border-indigo-800/60 px-4 py-2.5 rounded-2xl flex items-center gap-3 text-xs">
-                <span className="p-2 bg-amber-500/20 text-amber-400 rounded-xl">
-                  <Users className="w-5 h-5" />
+              <div className="bg-slate-900/80 border border-indigo-800/60 px-3.5 py-2 rounded-2xl flex items-center gap-2.5 text-xs">
+                <span className="p-1.5 sm:p-2 bg-amber-500/20 text-amber-400 rounded-xl">
+                  <Users className="w-4 h-4 sm:w-5 sm:h-5" />
                 </span>
                 <div>
-                  <span className="text-[10px] text-slate-400 uppercase font-bold block">Tim Pengelola</span>
-                  <span className="font-bold text-amber-300">{webmasters.length} User Aktif</span>
+                  <span className="text-[9px] sm:text-[10px] text-slate-400 uppercase font-bold block">Tim Pengelola</span>
+                  <span className="font-bold text-amber-300 text-xs sm:text-sm">{webmasters.length} User Aktif</span>
                 </div>
               </div>
-
-              <NotificationBell />
             </div>
           </div>
 

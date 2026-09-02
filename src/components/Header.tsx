@@ -212,35 +212,35 @@ export const Header: React.FC = () => {
   // Specific role navigation options when logged into portals
   const roleNavItems = {
     student: [
-      { id: 'overview', label: 'Ringkasan Portal' },
-      { id: 'biodata', label: 'Biodata Diri' },
-      { id: 'documents', label: 'Verifikasi Berkas' },
-      { id: 'lms', label: 'LMS Pembelajaran' },
-      { id: 'loa', label: 'Surat LoA Resmi' },
-      { id: 'payment', label: 'Status Keuangan' },
+      { id: 'overview', label: 'Ringkasan Portal', icon: <Home className="w-3.5 h-3.5" /> },
+      { id: 'biodata', label: 'Biodata Diri', icon: <User className="w-3.5 h-3.5" /> },
+      { id: 'documents', label: 'Verifikasi Berkas', icon: <FileText className="w-3.5 h-3.5" /> },
+      { id: 'lms', label: 'LMS Pembelajaran', icon: <BookOpen className="w-3.5 h-3.5" /> },
+      { id: 'loa', label: 'Surat LoA Resmi', icon: <ShieldCheck className="w-3.5 h-3.5" /> },
+      { id: 'payment', label: 'Status Keuangan', icon: <TrendingUp className="w-3.5 h-3.5" /> },
     ],
     admin: [
-      { id: 'candidates', label: 'Data Peserta' },
-      { id: 'finance', label: 'Rekapitulasi Kas' },
-      { id: 'loa', label: 'Surat LoA' },
-      { id: 'investor_report', label: 'Laporan Investor' },
+      { id: 'candidates', label: 'Data Peserta', icon: <GraduationCap className="w-3.5 h-3.5" /> },
+      { id: 'finance', label: 'Rekapitulasi Kas', icon: <TrendingUp className="w-3.5 h-3.5" /> },
+      { id: 'loa', label: 'Surat LoA', icon: <ShieldCheck className="w-3.5 h-3.5" /> },
+      { id: 'investor_report', label: 'Laporan Investor', icon: <Building2 className="w-3.5 h-3.5" /> },
     ],
     superadmin: [
-      { id: 'candidates', label: 'Data Peserta' },
-      { id: 'finance', label: 'Kas Global' },
-      { id: 'loa', label: 'Persetujuan LoA' },
-      { id: 'investor_report', label: 'Laporan Direksi' },
-      { id: 'audit_logs', label: 'Audit Log' },
+      { id: 'candidates', label: 'Data Peserta', icon: <GraduationCap className="w-3.5 h-3.5" /> },
+      { id: 'finance', label: 'Kas Global', icon: <TrendingUp className="w-3.5 h-3.5" /> },
+      { id: 'loa', label: 'Persetujuan LoA', icon: <ShieldCheck className="w-3.5 h-3.5" /> },
+      { id: 'investor_report', label: 'Laporan Direksi', icon: <Crown className="w-3.5 h-3.5" /> },
+      { id: 'audit_logs', label: 'Audit Log', icon: <Lock className="w-3.5 h-3.5" /> },
     ],
     investor: [
-      { id: 'financials', label: 'Laporan Keuangan' },
-      { id: 'portfolio', label: 'Portofolio Modal' },
-      { id: 'cashflow', label: 'Arus Kas & Dividen' },
+      { id: 'financials', label: 'Laporan Keuangan', icon: <TrendingUp className="w-3.5 h-3.5" /> },
+      { id: 'portfolio', label: 'Portofolio Modal', icon: <Building2 className="w-3.5 h-3.5" /> },
+      { id: 'cashflow', label: 'Arus Kas & Dividen', icon: <Sparkles className="w-3.5 h-3.5" /> },
     ],
     webmaster: [
-      { id: 'features', label: 'Kontrol Fitur' },
-      { id: 'seo', label: 'Konfigurasi SEO' },
-      { id: 'audit', label: 'Log Sistem' },
+      { id: 'features', label: 'Kontrol Fitur', icon: <Globe className="w-3.5 h-3.5" /> },
+      { id: 'seo', label: 'Konfigurasi SEO', icon: <Globe className="w-3.5 h-3.5" /> },
+      { id: 'audit', label: 'Log Sistem', icon: <Lock className="w-3.5 h-3.5" /> },
     ],
   };
 
@@ -297,10 +297,28 @@ export const Header: React.FC = () => {
     },
   ];
 
+  // Role display label helpers
+  const getRoleShortLabel = () => {
+    switch (currentRole) {
+      case 'student':
+        return currentCandidate?.fullName ? currentCandidate.fullName.split(' ')[0] : 'Siswa';
+      case 'admin':
+        return 'Admin Jbr';
+      case 'superadmin':
+        return 'Direksi';
+      case 'investor':
+        return 'Investor';
+      case 'webmaster':
+        return 'Webmaster';
+      default:
+        return 'Visitor';
+    }
+  };
+
   return (
     <header className="sticky top-0 z-40 w-full bg-white/95 dark:bg-slate-900/95 backdrop-blur-md border-b border-slate-200 dark:border-slate-800 shadow-sm transition-colors duration-200">
       {/* =========================================================================
-          1. TOP UTILITY / HOTLINE BAR (DESKTOP & LAPTOP ONLY)
+          1. TOP UTILITY / HOTLINE BAR (DESKTOP & LAPTOP ONLY - HIDDEN ON MOBILE)
          ========================================================================= */}
       <div className="bg-gradient-to-r from-[#071E3D] via-[#0F3D7A] to-[#071E3D] text-slate-100 text-xs py-1.5 px-4 sm:px-6 hidden lg:block border-b border-blue-900/50">
         <div className="max-w-7xl mx-auto flex justify-between items-center text-[11px]">
@@ -368,21 +386,21 @@ export const Header: React.FC = () => {
       </div>
 
       {/* =========================================================================
-          2. MAIN HEADER BAR (BALANCED FOR MOBILE & DESKTOP)
+          2. MAIN HEADER BAR (RINGKAS, BERSIH, PROPORSIONAL DI SEMUA LAYAR)
          ========================================================================= */}
-      <div className="max-w-7xl mx-auto px-3 sm:px-6 h-14 sm:h-16 flex items-center justify-between gap-2">
-        {/* BRAND LOGO (CLICKABLE) */}
+      <div className="max-w-7xl mx-auto px-2.5 sm:px-4 md:px-6 h-14 sm:h-16 flex items-center justify-between gap-1.5 sm:gap-2 w-full max-w-full overflow-hidden">
+        {/* BRAND LOGO AREA */}
         <button
           onClick={() => handleNavClick('beranda')}
           aria-label="Kembali ke Beranda Prospect Education Jember"
-          className="text-left cursor-pointer shrink-0 focus-visible:ring-2 focus-visible:ring-[#0F3D7A] rounded-xl focus-visible:outline-hidden min-w-0"
+          className="flex-1 min-w-0 max-w-full overflow-hidden text-left cursor-pointer focus-visible:ring-2 focus-visible:ring-[#0F3D7A] rounded-xl focus-visible:outline-hidden"
         >
           <BrandLogo variant="header" showSubtitle={true} />
         </button>
 
         {/* LOGGED IN ACTIVE ROLE PILL (DESKTOP) */}
         {currentRole !== 'visitor' && (
-          <div className="hidden xl:flex items-center gap-2 bg-blue-50 dark:bg-slate-800 border border-blue-200 dark:border-slate-700 px-3 py-1.5 rounded-xl text-xs">
+          <div className="hidden xl:flex items-center gap-2 bg-blue-50 dark:bg-slate-800 border border-blue-200 dark:border-slate-700 px-3 py-1.5 rounded-xl text-xs shrink-0">
             <div className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
             <span className="text-slate-700 dark:text-slate-200 font-medium">
               Mode Portal:
@@ -399,21 +417,10 @@ export const Header: React.FC = () => {
           </div>
         )}
 
-        {/* RIGHT CONTROLS */}
-        <div className="flex items-center gap-1.5 sm:gap-2 shrink-0">
+        {/* RIGHT CONTROLS: ELEGANT, NEVER OVERFLOWING */}
+        <div className="flex items-center gap-1 sm:gap-2 shrink-0">
           {/* Notification Bell */}
           <NotificationBell />
-
-          {/* Quick WA button (Mobile) */}
-          <a
-            href="https://wa.me/6282334554396?text=Halo%20Admin%20Prospect%20Education%20Jember,%20saya%20ingin%20konsultasi%20program"
-            target="_blank"
-            rel="noreferrer"
-            aria-label="Chat WhatsApp Admin Jember"
-            className="lg:hidden flex items-center justify-center p-2 rounded-xl bg-emerald-500/10 hover:bg-emerald-500/20 text-emerald-600 dark:text-emerald-400 border border-emerald-500/20 active:scale-95 transition"
-          >
-            <Phone className="w-4 h-4" />
-          </a>
 
           {/* =====================================================================
               DESKTOP ONLY: DAFTAR & MASUK BUTTONS (LARGE SCREENS >= lg)
@@ -539,8 +546,8 @@ export const Header: React.FC = () => {
               </div>
             </div>
           ) : (
-            /* USER LOGGED IN CAPSULE */
-            <div className="flex items-center gap-1.5 sm:gap-2">
+            /* USER LOGGED IN CAPSULE (DESKTOP) */
+            <div className="hidden lg:flex items-center gap-2 shrink-0">
               <button
                 onClick={() => {
                   if (currentRole === 'student') setActiveTab('overview');
@@ -548,14 +555,14 @@ export const Header: React.FC = () => {
                   else if (currentRole === 'investor') setActiveTab('financials');
                   else if (currentRole === 'webmaster') setActiveTab('features');
                 }}
-                className="flex items-center gap-2 bg-slate-900 text-white px-2.5 sm:px-3 py-1.5 rounded-xl border border-slate-700 text-xs font-medium shadow-xs hover:border-amber-400 transition cursor-pointer"
+                className="flex items-center gap-2 bg-slate-900 text-white px-3 py-1.5 rounded-xl border border-slate-700 text-xs font-medium shadow-xs hover:border-amber-400 transition cursor-pointer"
               >
                 <div className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
-                <span className="font-bold truncate max-w-[90px] sm:max-w-[130px]">
+                <span className="font-bold truncate max-w-[130px]">
                   {currentUserSession?.fullName ||
                     (currentRole === 'student' ? currentCandidate?.fullName || 'Peserta' : currentRole.toUpperCase())}
                 </span>
-                <span className="text-[9px] sm:text-[10px] bg-amber-500/20 text-amber-300 px-1.5 py-0.5 rounded font-bold uppercase border border-amber-500/30">
+                <span className="text-[10px] bg-amber-500/20 text-amber-300 px-1.5 py-0.5 rounded font-bold uppercase border border-amber-500/30">
                   {currentRole}
                 </span>
               </button>
@@ -567,51 +574,59 @@ export const Header: React.FC = () => {
                 className="flex items-center gap-1 bg-red-600 hover:bg-red-700 text-white text-xs font-bold px-2.5 py-1.5 rounded-xl transition cursor-pointer shrink-0 shadow-xs"
               >
                 <LogOut className="w-3.5 h-3.5" aria-hidden="true" />
-                <span className="hidden sm:inline">Keluar</span>
+                <span>Keluar</span>
               </button>
             </div>
           )}
 
           {/* =====================================================================
-              MOBILE QUICK MASUK BUTTON (Sleek, Compact, Never Overflows)
+              MOBILE ONLY: USER LOGGED IN STATUS PILL (COMPACT & CLEAN)
+             ===================================================================== */}
+          {currentRole !== 'visitor' && (
+            <button
+              onClick={() => setMobileMenuOpen(true)}
+              aria-label="Buka Menu Akun Pengguna"
+              className="lg:hidden flex items-center gap-1 bg-[#0F3D7A] text-amber-300 px-1.5 sm:px-2 py-1 rounded-lg border border-amber-400/40 text-[10px] sm:text-[11px] font-bold shadow-xs active:scale-95 transition shrink-0 max-w-[75px] truncate"
+            >
+              <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse shrink-0" />
+              <span className="truncate">{getRoleShortLabel()}</span>
+            </button>
+          )}
+
+          {/* =====================================================================
+              MOBILE ONLY: COMPACT LOGIN ACTION (IF VISITOR)
              ===================================================================== */}
           {currentRole === 'visitor' && (
             <button
               onClick={() => openLoginModal('student', 'login')}
-              className="lg:hidden flex items-center gap-1 bg-[#0F3D7A] hover:bg-[#1653a1] active:scale-95 text-amber-300 font-extrabold text-xs px-2.5 py-1.5 rounded-xl border border-amber-400/40 shadow-xs transition shrink-0"
+              className="lg:hidden flex items-center gap-1 bg-gradient-to-r from-amber-400 to-amber-500 text-slate-950 font-black text-[11px] px-2 py-1.5 rounded-xl shadow-xs active:scale-95 transition shrink-0"
             >
-              <LogIn className="w-3.5 h-3.5 text-amber-300" />
+              <LogIn className="w-3 h-3 text-slate-950" />
               <span>Masuk</span>
             </button>
           )}
 
           {/* =====================================================================
-              MOBILE HAMBURGER MENU BUTTON (Always visible, prominent, high-contrast)
+              MOBILE ONLY: HAMBURGER MENU BUTTON (ALWAYS ACCESSIBLE, NEVER CUT OFF)
              ===================================================================== */}
           <button
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
             aria-expanded={mobileMenuOpen}
             aria-controls="mobile-navigation-drawer"
-            aria-label={mobileMenuOpen ? 'Tutup menu navigasi' : 'Buka menu lengkap'}
-            className="lg:hidden flex items-center justify-center gap-1 px-2.5 py-1.5 bg-gradient-to-r from-[#0F3D7A] to-[#071E3D] text-amber-300 font-black text-xs rounded-xl shadow-xs border border-amber-400/50 active:scale-95 transition cursor-pointer shrink-0"
+            aria-label={mobileMenuOpen ? 'Tutup menu' : 'Buka menu lengkap'}
+            className="lg:hidden w-8.5 h-8.5 sm:w-9 sm:h-9 flex items-center justify-center rounded-xl bg-slate-100 dark:bg-slate-800 text-slate-800 dark:text-slate-100 hover:bg-slate-200 dark:hover:bg-slate-700 border border-slate-300 dark:border-slate-700 active:scale-95 transition cursor-pointer shrink-0"
           >
             {mobileMenuOpen ? (
-              <>
-                <X className="w-4 h-4 text-amber-300" aria-hidden="true" />
-                <span className="text-[11px] font-black">TUTUP</span>
-              </>
+              <X className="w-4.5 h-4.5 text-amber-500" aria-hidden="true" />
             ) : (
-              <>
-                <Menu className="w-4 h-4 text-amber-300" aria-hidden="true" />
-                <span className="text-[11px] font-black">MENU</span>
-              </>
+              <Menu className="w-4.5 h-4.5 text-slate-800 dark:text-slate-100" aria-hidden="true" />
             )}
           </button>
         </div>
       </div>
 
       {/* =========================================================================
-          3. FULL DESKTOP (PC) MULTI-MENU NAVBAR (ALL 14 MENUS CLEARLY DISPLAYED)
+          3. FULL DESKTOP (PC) MULTI-MENU NAVBAR (CLEAR, ELEGANT & SPACIOUS)
          ========================================================================= */}
       <div className="hidden lg:block bg-slate-50/95 dark:bg-slate-950/90 border-t border-slate-200/80 dark:border-slate-800/80 px-4 sm:px-6 py-1.5">
         <div className="max-w-7xl mx-auto flex items-center justify-between gap-2">
@@ -663,74 +678,34 @@ export const Header: React.FC = () => {
       </div>
 
       {/* =========================================================================
-          4. MOBILE (ANDROID) HORIZONTAL SCROLL QUICK PILLS (SMOOTH & NEVER CUT OFF)
-         ========================================================================= */}
-      <div
-        className="lg:hidden w-full bg-slate-100/95 dark:bg-slate-950 border-t border-slate-200/90 dark:border-slate-800/90 overflow-x-auto no-scrollbar scroll-smooth px-2.5 py-1.5 flex items-center gap-1.5"
-        role="navigation"
-        aria-label="Pilihan Menu Cepat Android"
-      >
-        {allNavItems.map((item) => {
-          const isActive =
-            currentRole === 'visitor' &&
-            (activeTab === item.id ||
-              (item.id === 'taiwan' && activeTab === 'taiwan') ||
-              (item.id === 'jepang' && activeTab === 'jepang') ||
-              (item.id === 'beranda' && (activeTab === 'beranda' || activeTab === 'home')) ||
-              (item.id === 'company' && (activeTab === 'company' || activeTab === 'profil')));
-
-          return (
-            <button
-              key={item.id}
-              onClick={() => handleNavClick(item.id)}
-              className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-bold shrink-0 transition-all cursor-pointer whitespace-nowrap active:scale-95 ${
-                isActive
-                  ? 'bg-[#0F3D7A] text-amber-300 border border-amber-400/40 shadow-xs'
-                  : 'bg-white dark:bg-slate-900 text-slate-700 dark:text-slate-300 border border-slate-200/80 dark:border-slate-800 hover:bg-slate-50'
-              }`}
-            >
-              <span className="shrink-0">{item.icon}</span>
-              <span>{item.label}</span>
-              {item.badge && !isActive && (
-                <span
-                  className={`text-[8px] px-1.5 py-0.2 rounded-full font-black uppercase ${
-                    item.badgeColor || 'bg-slate-200 text-slate-700'
-                  }`}
-                >
-                  {item.badge}
-                </span>
-              )}
-            </button>
-          );
-        })}
-      </div>
-
-      {/* =========================================================================
-          5. MOBILE FULL DRAWER NAVIGATION (OPENED VIA 'MENU' BUTTON)
+          4. MOBILE LUXURY FULL DRAWER NAVIGATION (PREMIUM MODAL VIEW)
          ========================================================================= */}
       {mobileMenuOpen && (
         <div
           id="mobile-navigation-drawer"
-          className="lg:hidden fixed inset-x-0 top-14 sm:top-16 bottom-0 bg-slate-950/95 backdrop-blur-xl text-slate-100 z-50 flex flex-col overflow-hidden border-t border-slate-800 animate-in fade-in slide-in-from-top-4 duration-200"
+          className="lg:hidden fixed inset-x-0 top-14 bottom-0 bg-slate-950/98 backdrop-blur-2xl text-slate-100 z-50 flex flex-col overflow-hidden border-t border-slate-800/80 animate-in fade-in slide-in-from-top-2 duration-150"
         >
-          {/* Drawer Scroll Container */}
+          {/* Drawer Scrollable Content */}
           <div className="flex-1 overflow-y-auto px-4 py-4 space-y-4 overscroll-contain">
-            {/* SECTION 1: AUTH & REGISTRATION CARDS */}
+            {/* SECTION 1: LOGGED IN USER CARD / VISITOR AUTH & REGISTRATION */}
             {currentRole !== 'visitor' ? (
-              <div className="bg-slate-900 p-3.5 rounded-2xl border border-slate-800 space-y-3 shadow-md">
+              <div className="bg-gradient-to-br from-slate-900 to-slate-950 p-4 rounded-2xl border border-blue-900/40 space-y-3 shadow-lg">
                 <div className="flex items-center justify-between">
-                  <div className="flex items-center gap-2.5">
-                    <div className="w-8 h-8 rounded-xl bg-amber-400/20 text-amber-300 flex items-center justify-center font-bold text-sm border border-amber-400/30">
-                      <User className="w-4 h-4" />
+                  <div className="flex items-center gap-3">
+                    <div className="w-9 h-9 rounded-xl bg-amber-400/20 text-amber-300 flex items-center justify-center font-bold text-sm border border-amber-400/30">
+                      <User className="w-5 h-5" />
                     </div>
                     <div>
-                      <p className="text-xs font-bold text-white truncate max-w-[180px]">
+                      <p className="text-xs font-black text-white truncate max-w-[160px]">
                         {currentUserSession?.fullName ||
                           (currentRole === 'student' ? currentCandidate?.fullName || 'Peserta' : currentRole.toUpperCase())}
                       </p>
-                      <span className="text-[10px] text-amber-400 font-semibold uppercase tracking-wider">
-                        Role: {currentRole}
-                      </span>
+                      <div className="flex items-center gap-1.5 mt-0.5">
+                        <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
+                        <span className="text-[10px] text-amber-300 font-bold uppercase tracking-wider">
+                          Portal: {currentRole}
+                        </span>
+                      </div>
                     </div>
                   </div>
                   <button
@@ -738,18 +713,18 @@ export const Header: React.FC = () => {
                       logout();
                       setMobileMenuOpen(false);
                     }}
-                    className="flex items-center gap-1 bg-red-600/30 hover:bg-red-600 text-red-300 hover:text-white px-2.5 py-1.5 rounded-lg text-xs font-bold border border-red-500/30 transition"
+                    className="flex items-center gap-1.5 bg-red-600 hover:bg-red-700 text-white px-3 py-1.5 rounded-xl text-xs font-bold transition shadow-xs cursor-pointer"
                   >
                     <LogOut className="w-3.5 h-3.5" />
                     <span>Keluar</span>
                   </button>
                 </div>
 
-                {/* Role Quick Navigation Menu */}
+                {/* Role Specific Navigation Grid */}
                 {roleNavItems[currentRole as keyof typeof roleNavItems] && (
-                  <div className="pt-2 border-t border-slate-800 space-y-1.5">
-                    <p className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">
-                      Navigasi Portal {currentRole.toUpperCase()}:
+                  <div className="pt-3 border-t border-slate-800 space-y-2">
+                    <p className="text-[10px] font-extrabold text-slate-400 uppercase tracking-wider">
+                      Navigasi Menu {currentRole.toUpperCase()}:
                     </p>
                     <div className="grid grid-cols-2 gap-1.5 text-xs">
                       {roleNavItems[currentRole as keyof typeof roleNavItems].map((tab) => (
@@ -759,13 +734,14 @@ export const Header: React.FC = () => {
                             setActiveTab(tab.id);
                             setMobileMenuOpen(false);
                           }}
-                          className={`px-2.5 py-2 rounded-xl text-[11px] font-bold text-left transition ${
+                          className={`flex items-center gap-2 px-3 py-2 rounded-xl text-xs font-bold transition text-left ${
                             activeTab === tab.id
-                              ? 'bg-[#0F3D7A] text-amber-300 border border-amber-400/40'
-                              : 'bg-slate-800 hover:bg-slate-700 text-slate-200'
+                              ? 'bg-[#0F3D7A] text-amber-300 border border-amber-400/50 shadow-xs'
+                              : 'bg-slate-800/80 hover:bg-slate-800 text-slate-200'
                           }`}
                         >
-                          {tab.label}
+                          <span className="shrink-0 text-amber-400">{tab.icon}</span>
+                          <span className="truncate">{tab.label}</span>
                         </button>
                       ))}
                     </div>
@@ -774,13 +750,13 @@ export const Header: React.FC = () => {
               </div>
             ) : (
               /* VISITOR REGISTRATION & LOGIN ACTION CARDS */
-              <div className="bg-slate-900 p-3.5 rounded-2xl border border-slate-800 space-y-3 shadow-md">
+              <div className="bg-slate-900/90 p-3.5 rounded-2xl border border-slate-800 space-y-3 shadow-md">
                 <div className="flex items-center justify-between">
                   <span className="text-xs font-black text-amber-300 flex items-center gap-1.5">
                     <Lock className="w-3.5 h-3.5 text-amber-400" />
-                    <span>Registrasi & Hak Akses Portal</span>
+                    <span>Pendaftaran & Portal Akun</span>
                   </span>
-                  <span className="text-[10px] text-slate-400 font-medium">Resmi Balung Jember</span>
+                  <span className="text-[10px] text-slate-400 font-medium">Balung, Jember</span>
                 </div>
 
                 {/* Main 2 Registration Action Cards */}
@@ -868,73 +844,81 @@ export const Header: React.FC = () => {
                 <Sparkles className="w-3.5 h-3.5 text-amber-400" />
                 <span>Program Pendidikan & Pendaftaran</span>
               </span>
-              <div className="grid grid-cols-2 gap-1.5">
+              <div className="grid grid-cols-2 gap-2">
                 <button
                   onClick={() => handleNavClick('taiwan')}
-                  className={`flex items-center gap-2 p-2.5 rounded-xl text-xs font-bold transition text-left ${
+                  className={`flex items-center gap-2.5 p-3 rounded-2xl text-xs font-bold transition text-left ${
                     activeTab === 'taiwan'
-                      ? 'bg-[#0F3D7A] text-amber-300 border border-amber-500/40'
+                      ? 'bg-[#0F3D7A] text-amber-300 border border-amber-500/40 shadow-sm'
                       : 'bg-slate-900 text-slate-200 hover:bg-slate-800 border border-slate-800'
                   }`}
                 >
-                  <Plane className="w-4 h-4 text-sky-400 shrink-0" />
+                  <div className="p-1.5 rounded-xl bg-sky-500/20 text-sky-400 shrink-0">
+                    <Plane className="w-4 h-4" />
+                  </div>
                   <div className="min-w-0">
-                    <p className="truncate font-bold">Kuliah Taiwan</p>
-                    <p className="text-[9px] text-sky-300">IFP 1+4 (Tanpa TOCFL)</p>
+                    <p className="truncate font-bold text-white">Kuliah Taiwan</p>
+                    <p className="text-[10px] text-sky-300 font-medium">IFP 1+4 (Tanpa TOCFL)</p>
                   </div>
                 </button>
 
                 <button
                   onClick={() => handleNavClick('jepang')}
-                  className={`flex items-center gap-2 p-2.5 rounded-xl text-xs font-bold transition text-left ${
+                  className={`flex items-center gap-2.5 p-3 rounded-2xl text-xs font-bold transition text-left ${
                     activeTab === 'jepang'
-                      ? 'bg-[#0F3D7A] text-amber-300 border border-amber-500/40'
+                      ? 'bg-[#0F3D7A] text-amber-300 border border-amber-500/40 shadow-sm'
                       : 'bg-slate-900 text-slate-200 hover:bg-slate-800 border border-slate-800'
                   }`}
                 >
-                  <Briefcase className="w-4 h-4 text-rose-400 shrink-0" />
+                  <div className="p-1.5 rounded-xl bg-rose-500/20 text-rose-400 shrink-0">
+                    <Briefcase className="w-4 h-4" />
+                  </div>
                   <div className="min-w-0">
-                    <p className="truncate font-bold">Kerja Jepang</p>
-                    <p className="text-[9px] text-rose-300">SSW / IM Japan</p>
+                    <p className="truncate font-bold text-white">Kerja Jepang</p>
+                    <p className="text-[10px] text-rose-300 font-medium">SSW / IM Japan</p>
                   </div>
                 </button>
 
                 <button
                   onClick={() => handleNavClick('pendaftaran')}
-                  className={`flex items-center gap-2 p-2.5 rounded-xl text-xs font-bold transition text-left ${
+                  className={`flex items-center gap-2.5 p-3 rounded-2xl text-xs font-bold transition text-left ${
                     activeTab === 'pendaftaran'
-                      ? 'bg-[#0F3D7A] text-amber-300 border border-amber-500/40'
+                      ? 'bg-[#0F3D7A] text-amber-300 border border-amber-500/40 shadow-sm'
                       : 'bg-slate-900 text-slate-200 hover:bg-slate-800 border border-slate-800'
                   }`}
                 >
-                  <FileEdit className="w-4 h-4 text-amber-400 shrink-0" />
+                  <div className="p-1.5 rounded-xl bg-amber-500/20 text-amber-400 shrink-0">
+                    <FileEdit className="w-4 h-4" />
+                  </div>
                   <div className="min-w-0">
-                    <p className="truncate font-bold">Daftar Online</p>
-                    <p className="text-[9px] text-amber-300">Form 3 Langkah</p>
+                    <p className="truncate font-bold text-white">Daftar Online</p>
+                    <p className="text-[10px] text-amber-300 font-medium">Form 3 Langkah</p>
                   </div>
                 </button>
 
                 <button
                   onClick={() => handleNavClick('lms')}
-                  className={`flex items-center gap-2 p-2.5 rounded-xl text-xs font-bold transition text-left ${
+                  className={`flex items-center gap-2.5 p-3 rounded-2xl text-xs font-bold transition text-left ${
                     activeTab === 'lms'
-                      ? 'bg-[#0F3D7A] text-amber-300 border border-amber-500/40'
+                      ? 'bg-[#0F3D7A] text-amber-300 border border-amber-500/40 shadow-sm'
                       : 'bg-slate-900 text-slate-200 hover:bg-slate-800 border border-slate-800'
                   }`}
                 >
-                  <BookOpen className="w-4 h-4 text-blue-400 shrink-0" />
+                  <div className="p-1.5 rounded-xl bg-blue-500/20 text-blue-400 shrink-0">
+                    <BookOpen className="w-4 h-4" />
+                  </div>
                   <div className="min-w-0">
-                    <p className="truncate font-bold">LMS Digital</p>
-                    <p className="text-[9px] text-blue-300">E-Learning Siswa</p>
+                    <p className="truncate font-bold text-white">LMS Digital</p>
+                    <p className="text-[10px] text-blue-300 font-medium">E-Learning Siswa</p>
                   </div>
                 </button>
               </div>
             </div>
 
-            {/* SECTION 3: SEMUA MENU PUBLIK LENGKAP (GRID) */}
+            {/* SECTION 3: SEMUA MENU PUBLIK LENGKAP */}
             <div className="space-y-1.5">
               <span className="text-[10px] font-extrabold uppercase tracking-wider text-slate-400 px-1">
-                {t('Semua Halaman & Informasi Lengkap', 'All Pages & Information')}
+                {t('Semua Halaman & Informasi', 'All Pages & Information')}
               </span>
               <div className="grid grid-cols-2 gap-1.5" role="navigation" aria-label="Semua Menu Drawer">
                 {allNavItems.map((item) => {
@@ -948,7 +932,7 @@ export const Header: React.FC = () => {
                     <button
                       key={item.id}
                       onClick={() => handleNavClick(item.id)}
-                      className={`flex items-center justify-between p-2 rounded-xl text-xs font-bold transition text-left ${
+                      className={`flex items-center justify-between p-2.5 rounded-xl text-xs font-bold transition text-left ${
                         isActive
                           ? 'bg-[#0F3D7A] text-amber-300 border border-amber-500/40 shadow-xs'
                           : 'bg-slate-900 text-slate-200 hover:bg-slate-800 border border-slate-800'
@@ -972,10 +956,10 @@ export const Header: React.FC = () => {
               href="https://wa.me/6282334554396?text=Halo%20Admin%20Prospect%20Education%20Jember,%20saya%20ingin%20konsultasi%20program"
               target="_blank"
               rel="noopener noreferrer"
-              className="flex items-center justify-between p-3 bg-emerald-950/80 border border-emerald-500/40 rounded-2xl text-emerald-200 transition active:scale-98 shadow-sm"
+              className="flex items-center justify-between p-3.5 bg-gradient-to-r from-emerald-950 to-slate-900 border border-emerald-500/40 rounded-2xl text-emerald-200 transition active:scale-98 shadow-sm"
             >
-              <div className="flex items-center gap-2.5">
-                <div className="w-8 h-8 rounded-xl bg-emerald-500 text-slate-950 flex items-center justify-center font-bold shrink-0 shadow-xs">
+              <div className="flex items-center gap-3">
+                <div className="w-9 h-9 rounded-xl bg-emerald-500 text-slate-950 flex items-center justify-center font-bold shrink-0 shadow-xs">
                   <Phone className="w-4 h-4" />
                 </div>
                 <div>

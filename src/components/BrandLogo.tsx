@@ -95,38 +95,38 @@ export const BrandLogo: React.FC<BrandLogoProps> = ({
     );
   }
 
-  // Default 'header' variant: Ultra responsive for Android & PC
+  // Default 'header' variant: Ultra responsive for Android & PC (Guaranteed never to overflow)
   return (
-    <div onClick={onClick} className={`flex items-center gap-2.5 sm:gap-3 cursor-pointer group shrink-0 ${className}`}>
-      <div className="relative bg-white p-1 rounded-xl shadow-xs border border-slate-200/80 dark:border-slate-700 overflow-hidden w-9 h-9 sm:w-10 sm:h-10 md:w-11 md:h-11 flex items-center justify-center shrink-0 group-hover:scale-105 transition-transform">
+    <div onClick={onClick} className={`flex items-center gap-2 sm:gap-2.5 cursor-pointer group min-w-0 max-w-full ${className}`}>
+      <div className="relative bg-white p-1 rounded-xl shadow-xs border border-slate-200/80 dark:border-slate-700 overflow-hidden w-8 h-8 sm:w-9 sm:h-9 md:w-10 md:h-10 flex items-center justify-center shrink-0 group-hover:scale-105 transition-transform">
         <img
           src={logoImg}
           alt="PROSPECT EDUCATION CABANG JEMBER"
           referrerPolicy="no-referrer"
           className="w-full h-full object-contain"
         />
-        <span className="absolute -bottom-0.5 -right-0.5 flex h-2.5 w-2.5">
+        <span className="absolute -bottom-0.5 -right-0.5 flex h-2 w-2 sm:h-2.5 sm:w-2.5">
           <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-amber-400 opacity-75"></span>
-          <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-amber-500 border border-white dark:border-slate-900"></span>
+          <span className="relative inline-flex rounded-full h-2 w-2 sm:h-2.5 sm:w-2.5 bg-amber-500 border border-white dark:border-slate-900"></span>
         </span>
       </div>
 
-      <div className="flex flex-col justify-center min-w-0">
-        <div className="flex items-center gap-1.5 flex-nowrap">
-          <span className="text-sm sm:text-base md:text-lg font-black text-[#0F3D7A] dark:text-white tracking-tight leading-none font-serif group-hover:text-blue-700 dark:group-hover:text-amber-300 transition-colors">
+      <div className="flex flex-col justify-center min-w-0 overflow-hidden">
+        <div className="flex items-center gap-1 sm:gap-1.5 flex-nowrap">
+          <span className="text-xs sm:text-base md:text-lg font-black text-[#0F3D7A] dark:text-white tracking-tight leading-none font-serif group-hover:text-blue-700 dark:group-hover:text-amber-300 transition-colors truncate">
             PROSPECT
           </span>
-          <span className="text-[9px] sm:text-[10px] md:text-xs font-black bg-[#0F3D7A] text-amber-300 px-1.5 py-0.5 rounded tracking-wider shadow-2xs leading-none">
+          <span className="text-[8px] sm:text-[10px] md:text-xs font-black bg-[#0F3D7A] text-amber-300 px-1 sm:px-1.5 py-0.5 rounded tracking-wider shadow-2xs leading-none shrink-0">
             EDUCATION
           </span>
         </div>
         {showSubtitle && (
-          <div className="flex items-center gap-1 mt-0.5">
-            <span className="text-[9px] sm:text-[10px] text-slate-500 dark:text-slate-400 font-medium tracking-wide truncate">
+          <div className="flex items-center gap-1 mt-0.5 truncate">
+            <span className="text-[8px] sm:text-[10px] text-slate-500 dark:text-slate-400 font-medium tracking-wide truncate">
               Cabang Jember
             </span>
             <span className="text-slate-300 dark:text-slate-600 hidden sm:inline">•</span>
-            <span className="text-[9px] text-emerald-600 dark:text-emerald-400 font-bold uppercase tracking-wider hidden sm:inline">
+            <span className="text-[8px] sm:text-[9px] text-emerald-600 dark:text-emerald-400 font-bold uppercase tracking-wider hidden sm:inline">
               Resmi & Legal
             </span>
           </div>

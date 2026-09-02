@@ -12,10 +12,15 @@ import {
   CheckCircle,
   Phone,
   Plane,
+  LogIn,
+  UserPlus,
+  TrendingUp,
+  Crown,
+  Lock,
 } from 'lucide-react';
 
 export const HeroSection: React.FC = () => {
-  const { setActiveTab, setRole, t } = useApp();
+  const { setActiveTab, setRole, openLoginModal, t } = useApp();
 
   return (
     <section className="relative bg-gradient-to-br from-[#071E3D] via-[#0F3D7A] to-[#1E40AF] text-white overflow-hidden py-12 sm:py-16 md:py-20 border-b border-blue-900/50">
@@ -73,25 +78,75 @@ export const HeroSection: React.FC = () => {
             </div>
           </div>
 
-          {/* CTA Buttons */}
-          <div className="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-3.5 pt-3">
-            <button
-              onClick={() => {
-                setActiveTab('pendaftaran');
-              }}
-              className="w-full sm:w-auto flex items-center justify-center gap-2.5 bg-amber-400 hover:bg-amber-300 active:scale-98 text-slate-950 font-extrabold text-sm px-7 py-3.5 rounded-xl shadow-lg hover:shadow-amber-400/20 transition-all cursor-pointer"
-            >
-              <GraduationCap className="w-5 h-5 text-slate-950" />
-              <span>{t('Daftar Online Sekarang', 'Apply Online Now')}</span>
-              <ArrowRight className="w-4 h-4 text-slate-950" />
-            </button>
+          {/* Primary Action Button Group */}
+          <div className="pt-2 space-y-3">
+            {/* Top Primary CTAs: Daftar Online Siswa & Login Siswa */}
+            <div className="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-3">
+              <button
+                onClick={() => {
+                  openLoginModal('student', 'register');
+                }}
+                className="w-full sm:w-auto flex items-center justify-center gap-2.5 bg-amber-400 hover:bg-amber-300 active:scale-98 text-slate-950 font-extrabold text-sm px-6 py-3.5 rounded-xl shadow-lg hover:shadow-amber-400/20 transition-all cursor-pointer"
+              >
+                <UserPlus className="w-5 h-5 text-slate-950" />
+                <span>{t('Daftar Siswa Baru', 'Student Registration')}</span>
+                <ArrowRight className="w-4 h-4 text-slate-950" />
+              </button>
 
-            <button
-              onClick={() => setActiveTab('program')}
-              className="w-full sm:w-auto flex items-center justify-center gap-2 bg-white/15 hover:bg-white/25 active:scale-98 text-white font-bold text-sm px-6 py-3.5 rounded-xl border border-white/30 backdrop-blur-sm transition shadow-sm cursor-pointer"
-            >
-              <span>{t('Lihat Detail Program', 'View Program Details')}</span>
-            </button>
+              <button
+                onClick={() => {
+                  openLoginModal('student', 'login');
+                }}
+                className="w-full sm:w-auto flex items-center justify-center gap-2 bg-blue-900/80 hover:bg-blue-800 active:scale-98 text-amber-300 font-bold text-sm px-6 py-3.5 rounded-xl border border-amber-400/40 backdrop-blur-sm transition shadow-md cursor-pointer"
+              >
+                <LogIn className="w-4 h-4 text-amber-300" />
+                <span>{t('Login Portal Siswa / LMS', 'Student LMS Login')}</span>
+              </button>
+
+              <button
+                onClick={() => setActiveTab('program')}
+                className="w-full sm:w-auto flex items-center justify-center gap-2 bg-white/10 hover:bg-white/20 active:scale-98 text-white font-semibold text-sm px-5 py-3.5 rounded-xl border border-white/20 backdrop-blur-sm transition cursor-pointer"
+              >
+                <span>{t('Detail Program', 'Program Details')}</span>
+              </button>
+            </div>
+
+            {/* Sub-bar: Direct Links for Admin, Superadmin, and Investor Portals */}
+            <div className="flex flex-wrap items-center justify-center lg:justify-start gap-2 pt-1 text-xs">
+              <span className="text-slate-300 text-[11px] font-medium mr-1">Akses Portal Khusus:</span>
+              
+              <button
+                onClick={() => openLoginModal('admin', 'login')}
+                className="flex items-center gap-1.5 px-3 py-1.5 bg-white/10 hover:bg-white/20 text-slate-100 rounded-lg border border-white/15 transition cursor-pointer text-[11px] font-semibold"
+              >
+                <Building2 className="w-3.5 h-3.5 text-blue-300" />
+                <span>Admin Jember</span>
+              </button>
+
+              <button
+                onClick={() => openLoginModal('superadmin', 'login')}
+                className="flex items-center gap-1.5 px-3 py-1.5 bg-white/10 hover:bg-white/20 text-slate-100 rounded-lg border border-white/15 transition cursor-pointer text-[11px] font-semibold"
+              >
+                <Crown className="w-3.5 h-3.5 text-amber-300" />
+                <span>Super Admin</span>
+              </button>
+
+              <button
+                onClick={() => openLoginModal('investor', 'login')}
+                className="flex items-center gap-1.5 px-3 py-1.5 bg-white/10 hover:bg-white/20 text-slate-100 rounded-lg border border-white/15 transition cursor-pointer text-[11px] font-semibold"
+              >
+                <TrendingUp className="w-3.5 h-3.5 text-emerald-300" />
+                <span>Investor Mitra</span>
+              </button>
+
+              <button
+                onClick={() => openLoginModal('investor', 'register')}
+                className="flex items-center gap-1.5 px-3 py-1.5 bg-emerald-500/20 hover:bg-emerald-500/30 text-emerald-300 rounded-lg border border-emerald-400/30 transition cursor-pointer text-[11px] font-semibold"
+              >
+                <Sparkles className="w-3.5 h-3.5 text-emerald-300" />
+                <span>Daftar Mitra Investor</span>
+              </button>
+            </div>
           </div>
         </div>
 

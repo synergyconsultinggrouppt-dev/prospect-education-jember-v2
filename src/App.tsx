@@ -40,6 +40,7 @@ export function App() {
     openLoginModal,
     closeLoginModal,
     loginModalRole,
+    loginModalInitialTab,
   } = useApp();
   const [verifyLoaQuery, setVerifyLoaQuery] = useState<string>('');
   const [isVerifyModalOpen, setIsVerifyModalOpen] = useState(false);
@@ -335,6 +336,7 @@ export function App() {
         isOpen={isLoginModalOpen}
         onClose={closeLoginModal}
         initialRole={loginModalRole}
+        initialTab={loginModalInitialTab}
       />
     </div>
   );

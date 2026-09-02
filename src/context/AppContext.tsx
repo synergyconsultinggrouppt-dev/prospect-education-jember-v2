@@ -249,7 +249,8 @@ interface AppContextType {
   isLoginModalOpen: boolean;
   setIsLoginModalOpen: (open: boolean) => void;
   loginModalRole: UserRole;
-  openLoginModal: (role?: UserRole) => void;
+  loginModalInitialTab: 'login' | 'register';
+  openLoginModal: (role?: UserRole, initialTab?: 'login' | 'register') => void;
   closeLoginModal: () => void;
   loginWithCredentials: (
     usernameInput: string,
@@ -303,6 +304,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
   // User Session & Authentication Modal State
   const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
   const [loginModalRole, setLoginModalRole] = useState<UserRole>('student');
+  const [loginModalInitialTab, setLoginModalInitialTab] = useState<'login' | 'register'>('login');
   const [currentUserSession, setCurrentUserSession] = useState<{
     username: string;
     fullName: string;
@@ -318,10 +320,11 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     }
   });
 
-  const openLoginModal = (role?: UserRole) => {
+  const openLoginModal = (role?: UserRole, initialTab: 'login' | 'register' = 'login') => {
     if (role && role !== 'visitor') {
       setLoginModalRole(role);
     }
+    setLoginModalInitialTab(initialTab);
     setIsLoginModalOpen(true);
   };
 
@@ -2105,6 +2108,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
         isLoginModalOpen,
         setIsLoginModalOpen,
         loginModalRole,
+        loginModalInitialTab,
         openLoginModal,
         closeLoginModal,
         loginWithCredentials,
